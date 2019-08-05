@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="js 事件流是指事件在 dom 中流转的顺序（或者传播路径），事件流转分为三个过程，捕获阶段 - 目标阶段 - 冒泡阶段。下面我们通过实践探索下事件流机制。 实践首先用 html 和 css 实现如下效果">
+<meta name="keywords" content="javascript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="js 事件流">
+<meta property="og:url" content="https://sunnybob.ml/2019/04/08/js 事件流/index.html">
+<meta property="og:site_name" content="Just a blog site">
+<meta property="og:description" content="js 事件流是指事件在 dom 中流转的顺序（或者传播路径），事件流转分为三个过程，捕获阶段 - 目标阶段 - 冒泡阶段。下面我们通过实践探索下事件流机制。 实践首先用 html 和 css 实现如下效果">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2019/png/242991/1554799009812-0da6e023-b092-4172-a55d-bd247c79a133.png#align=left&display=inline&height=217&name=image.png&originHeight=678&originWidth=678&size=18409&status=done&width=217">
+<meta property="og:updated_time" content="2019-08-05T08:24:09.902Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="js 事件流">
+<meta name="twitter:description" content="js 事件流是指事件在 dom 中流转的顺序（或者传播路径），事件流转分为三个过程，捕获阶段 - 目标阶段 - 冒泡阶段。下面我们通过实践探索下事件流机制。 实践首先用 html 和 css 实现如下效果">
+<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2019/png/242991/1554799009812-0da6e023-b092-4172-a55d-bd247c79a133.png#align=left&display=inline&height=217&name=image.png&originHeight=678&originWidth=678&size=18409&status=done&width=217">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>js 事件流</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2019/04/17/记一次依赖循环引用/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2019/04/02/nginx负载均衡初实践/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://sunnybob.ml/2019/04/08/js 事件流/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://sunnybob.ml/2019/04/08/js 事件流/&text=js 事件流"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <!-- <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://sunnybob.ml/2019/04/08/js 事件流/&title=js 事件流"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://sunnybob.ml/2019/04/08/js 事件流/&is_video=false&description=js 事件流"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li> -->
+  <li><a class="icon" href="mailto:?subject=js 事件流&body=Check out this article: https://sunnybob.ml/2019/04/08/js 事件流/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <!-- <li><a class="icon" href="https://getpocket.com/save?url=https://sunnybob.ml/2019/04/08/js 事件流/&title=js 事件流"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="http://reddit.com/submit?url=https://sunnybob.ml/2019/04/08/js 事件流/&title=js 事件流"><i class="fab fa-reddit " aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://sunnybob.ml/2019/04/08/js 事件流/&title=js 事件流"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="http://digg.com/submit?url=https://sunnybob.ml/2019/04/08/js 事件流/&title=js 事件流"><i class="fab fa-digg " aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://sunnybob.ml/2019/04/08/js 事件流/&name=js 事件流&description=&lt;p&gt;js 事件流是指事件在 dom 中流转的顺序（或者传播路径），事件流转分为三个过程，捕获阶段 - 目标阶段 - 冒泡阶段。下面我们通过实践探索下事件流机制。&lt;br&gt;&lt;a name=&#34;507829ed&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h4 id=&#34;实践&#34;&gt;&lt;a href=&#34;#实践&#34; class=&#34;headerlink&#34; title=&#34;实践&#34;&gt;&lt;/a&gt;实践&lt;/h4&gt;&lt;p&gt;首先用 html 和 css 实现如下效果&lt;br&gt;&lt;br&gt;&lt;img src=&#34;https://cdn.nlark.com/yuque/0/2019/png/242991/1554799009812-0da6e023-b092-4172-a55d-bd247c79a133.png#align=left&amp;display=inline&amp;height=217&amp;name=image.png&amp;originHeight=678&amp;originWidth=678&amp;size=18409&amp;status=done&amp;width=217&#34; alt=&#34;image.png&#34;&gt;&lt;/p&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li> -->
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#实践"><span class="toc-number">1.</span> <span class="toc-text">实践</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#总结："><span class="toc-number">2.</span> <span class="toc-text">总结：</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        js 事件流
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Just a blog site</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-04-07T20:49:35.000Z" itemprop="datePublished">2019-04-08</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/javascript/">javascript</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>js 事件流是指事件在 dom 中流转的顺序（或者传播路径），事件流转分为三个过程，捕获阶段 - 目标阶段 - 冒泡阶段。下面我们通过实践探索下事件流机制。<br><a name="507829ed"></a></p>
+<h4 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h4><p>首先用 html 和 css 实现如下效果<br><br><img src="https://cdn.nlark.com/yuque/0/2019/png/242991/1554799009812-0da6e023-b092-4172-a55d-bd247c79a133.png#align=left&display=inline&height=217&name=image.png&originHeight=678&originWidth=678&size=18409&status=done&width=217" alt="image.png"></p>
+<a id="more"></a><br>接着我们通过 js 代码来控制事件回调执行的时机
+
+<ul>
+<li>回调在冒泡阶段执行</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">log</span>(<span class="params">msg</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(msg);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 回调冒泡阶段执行</span></span><br><span class="line"><span class="built_in">document</span>.querySelector(<span class="string">'.wrapper'</span>).addEventListener(<span class="string">'click'</span>, () =&gt; log(<span class="string">'wraper'</span>), <span class="literal">false</span>);</span><br><span class="line"><span class="built_in">document</span>.querySelector(<span class="string">'.outer'</span>).addEventListener(<span class="string">'click'</span>, () =&gt; log(<span class="string">'outer'</span>), <span class="literal">false</span>);</span><br><span class="line"><span class="built_in">document</span>.querySelector(<span class="string">'.inner'</span>).addEventListener(<span class="string">'click'</span>, () =&gt; log(<span class="string">'inner'</span>), <span class="literal">false</span>);</span><br></pre></td></tr></table></figure>
+
+<p>我们分别点击wrapper、outer、inner，查看打印结果</p>
+<table>
+<thead>
+<tr>
+<th>点击对象</th>
+<th>打印结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>wrapper</td>
+<td>wrapper</td>
+</tr>
+<tr>
+<td>outer</td>
+<td>outer<br>wrapper</td>
+</tr>
+<tr>
+<td>inner</td>
+<td>inner<br>outer<br>wrapper</td>
+</tr>
+</tbody></table>
+<p>从打印结果我们可以得出如下结论:<br>当我们点击某个节点时，首先打印该节点的内容，然后，从该节点开始向上冒泡，若父级监听了相同的事件， 那么父级对应的事件回调也会执行，直到 window。</p>
+<ul>
+<li>回调在捕获阶段执行</li>
+</ul>
+<p>接着我们把上面 js 代码 addEventListener 的第三个参数改为 true，让回调在捕获阶段执行，</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">log</span>(<span class="params">msg</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(msg);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 回调捕获阶段执行</span></span><br><span class="line"><span class="built_in">document</span>.querySelector(<span class="string">'.wrapper'</span>).addEventListener(<span class="string">'click'</span>, () =&gt; log(<span class="string">'wraper'</span>), <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.querySelector(<span class="string">'.outer'</span>).addEventListener(<span class="string">'click'</span>, () =&gt; log(<span class="string">'outer'</span>), <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.querySelector(<span class="string">'.inner'</span>).addEventListener(<span class="string">'click'</span>, () =&gt; log(<span class="string">'inner'</span>), <span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
+
+<p>然后再次分别点击wrapper、outer、inner，查看打印结果</p>
+<table>
+<thead>
+<tr>
+<th>点击对象</th>
+<th>打印结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>wrapper</td>
+<td>wrapper</td>
+</tr>
+<tr>
+<td>outer</td>
+<td>wrapper<br>outer</td>
+</tr>
+<tr>
+<td>inner</td>
+<td>wrapper</td>
+</tr>
+</tbody></table>
+<p>outer<br>inner |</p>
+<p>从这次的打印结果，我们可以得出结论：<br>当某个节点被点击时，事件流从顶级 window 依次向下传播，若传播到的节点也监听了相同的事件，那么该事件的回调也会执行，直到该点击节点。</p>
+<ul>
+<li>混合</li>
+</ul>
+<p>下面我们看下更复杂的情况</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">log</span>(<span class="params">msg</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(msg);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">document</span>.querySelector(<span class="string">'.wrapper'</span>).addEventListener(<span class="string">'click'</span>, () =&gt; log(<span class="string">'wraper one'</span>), <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.querySelector(<span class="string">'.wrapper'</span>).addEventListener(<span class="string">'click'</span>, () =&gt; log(<span class="string">'wraper two'</span>), <span class="literal">false</span>);</span><br><span class="line"><span class="built_in">document</span>.querySelector(<span class="string">'.outer'</span>).addEventListener(<span class="string">'click'</span>, () =&gt; log(<span class="string">'outer'</span>), <span class="literal">false</span>);</span><br><span class="line"><span class="built_in">document</span>.querySelector(<span class="string">'.inner'</span>).addEventListener(<span class="string">'click'</span>, () =&gt; log(<span class="string">'inner'</span>), <span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
+
+<p>依次点击wrapper、outer、inner， 看下打印结果</p>
+<table>
+<thead>
+<tr>
+<th>点击对象</th>
+<th>打印结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>wrapper</td>
+<td>wrapper one <br>wrapper two</td>
+</tr>
+<tr>
+<td>outer</td>
+<td>wrapper one<br>outer<br>wrapper two</td>
+</tr>
+<tr>
+<td>inner</td>
+<td>wrapper one</td>
+</tr>
+</tbody></table>
+<p>inner<br>outer<br>wrapper two |</p>
+<p>由这次的打印结果及之前的结论，我们可以得出最终的结论。</p>
+<p><a name="8c9d507e"></a></p>
+<h4 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h4><p>事件回调的执行顺序是按照事件流来的传播顺序执行的，首先是捕获阶段，若从window 到 当前点击节点的有捕获阶段的监听函数，则按照从顶级 window 到当前点击节点的传播顺序执行回调，接着到达目标阶段，即执行当前点击节点的回调，最后是冒泡阶段，若从当前节点到顶级 window 有冒泡阶段的监听函数，则按照这个传播顺序执行回调。</p>
+<p>注: 事件的监听节点可以看做是目标阶段，若是一个节点既在捕获阶段又在冒泡阶段监听了相同的事件，那么这个节点两个事件回调的执行顺序按照事件的添加的顺序执行（不区分捕获阶段和冒泡阶段，同属于目标阶段）。</p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#实践"><span class="toc-number">1.</span> <span class="toc-text">实践</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#总结："><span class="toc-number">2.</span> <span class="toc-text">总结：</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://sunnybob.ml/2019/04/08/js 事件流/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://sunnybob.ml/2019/04/08/js 事件流/&text=js 事件流"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <!-- <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://sunnybob.ml/2019/04/08/js 事件流/&title=js 事件流"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://sunnybob.ml/2019/04/08/js 事件流/&is_video=false&description=js 事件流"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li> -->
+  <li><a class="icon" href="mailto:?subject=js 事件流&body=Check out this article: https://sunnybob.ml/2019/04/08/js 事件流/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <!-- <li><a class="icon" href="https://getpocket.com/save?url=https://sunnybob.ml/2019/04/08/js 事件流/&title=js 事件流"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="http://reddit.com/submit?url=https://sunnybob.ml/2019/04/08/js 事件流/&title=js 事件流"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://sunnybob.ml/2019/04/08/js 事件流/&title=js 事件流"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="http://digg.com/submit?url=https://sunnybob.ml/2019/04/08/js 事件流/&title=js 事件流"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://sunnybob.ml/2019/04/08/js 事件流/&name=js 事件流&description=&lt;p&gt;js 事件流是指事件在 dom 中流转的顺序（或者传播路径），事件流转分为三个过程，捕获阶段 - 目标阶段 - 冒泡阶段。下面我们通过实践探索下事件流机制。&lt;br&gt;&lt;a name=&#34;507829ed&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h4 id=&#34;实践&#34;&gt;&lt;a href=&#34;#实践&#34; class=&#34;headerlink&#34; title=&#34;实践&#34;&gt;&lt;/a&gt;实践&lt;/h4&gt;&lt;p&gt;首先用 html 和 css 实现如下效果&lt;br&gt;&lt;br&gt;&lt;img src=&#34;https://cdn.nlark.com/yuque/0/2019/png/242991/1554799009812-0da6e023-b092-4172-a55d-bd247c79a133.png#align=left&amp;display=inline&amp;height=217&amp;name=image.png&amp;originHeight=678&amp;originWidth=678&amp;size=18409&amp;status=done&amp;width=217&#34; alt=&#34;image.png&#34;&gt;&lt;/p&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li> -->
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2019 sunnybob
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+  <script>
+    var images = document.querySelectorAll('img');
+    images.forEach(function(image) {
+      var src = image.getAttribute('src');
+      var regex = /width=([0-9]+)|height=([0-9]+)/g;
+      var size = src.match(regex);
+      if (Object.prototype.toString.call(size) === '[object Array]' && size.length) {
+        size.forEach(item => {
+          var arr = item.split('=');
+          image.setAttribute(arr[0], arr[1]);
+        })
+      }
+    });
+  </script>
+</footer>
+
+    </div>
+    <!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+    <!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'cactus-1';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>

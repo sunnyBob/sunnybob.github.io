@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="今天在 MDN 深究了下 parseInt 的用法，顿时觉得头要炸了，后来花了些时间总算搞明白了，写下来记录下，免得以后范蒙。  1. 用法parseInt(string, radix);一句话描述其作用就是将用 radix 进制表示的 string 最终转换为十进制。 2. 具体实践举几个基本的小栗子： 1234parseInt(&apos;255&apos;) // 255 不写 radix 参数指定几进制时，一">
+<meta name="keywords" content="javascript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="parseInt用法详解">
+<meta property="og:url" content="https://sunnybob.ml/2019/03/08/parseInt用法详解/index.html">
+<meta property="og:site_name" content="Just a blog site">
+<meta property="og:description" content="今天在 MDN 深究了下 parseInt 的用法，顿时觉得头要炸了，后来花了些时间总算搞明白了，写下来记录下，免得以后范蒙。  1. 用法parseInt(string, radix);一句话描述其作用就是将用 radix 进制表示的 string 最终转换为十进制。 2. 具体实践举几个基本的小栗子： 1234parseInt(&apos;255&apos;) // 255 不写 radix 参数指定几进制时，一">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-08-05T08:24:09.902Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="parseInt用法详解">
+<meta name="twitter:description" content="今天在 MDN 深究了下 parseInt 的用法，顿时觉得头要炸了，后来花了些时间总算搞明白了，写下来记录下，免得以后范蒙。  1. 用法parseInt(string, radix);一句话描述其作用就是将用 radix 进制表示的 string 最终转换为十进制。 2. 具体实践举几个基本的小栗子： 1234parseInt(&apos;255&apos;) // 255 不写 radix 参数指定几进制时，一">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>parseInt用法详解</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2019/04/02/nginx负载均衡初实践/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2019/03/06/组件库打包 umd 发布/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://sunnybob.ml/2019/03/08/parseInt用法详解/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://sunnybob.ml/2019/03/08/parseInt用法详解/&text=parseInt用法详解"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <!-- <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://sunnybob.ml/2019/03/08/parseInt用法详解/&title=parseInt用法详解"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://sunnybob.ml/2019/03/08/parseInt用法详解/&is_video=false&description=parseInt用法详解"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li> -->
+  <li><a class="icon" href="mailto:?subject=parseInt用法详解&body=Check out this article: https://sunnybob.ml/2019/03/08/parseInt用法详解/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <!-- <li><a class="icon" href="https://getpocket.com/save?url=https://sunnybob.ml/2019/03/08/parseInt用法详解/&title=parseInt用法详解"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="http://reddit.com/submit?url=https://sunnybob.ml/2019/03/08/parseInt用法详解/&title=parseInt用法详解"><i class="fab fa-reddit " aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://sunnybob.ml/2019/03/08/parseInt用法详解/&title=parseInt用法详解"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="http://digg.com/submit?url=https://sunnybob.ml/2019/03/08/parseInt用法详解/&title=parseInt用法详解"><i class="fab fa-digg " aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://sunnybob.ml/2019/03/08/parseInt用法详解/&name=parseInt用法详解&description=&lt;p&gt;今天在 MDN 深究了下 parseInt 的用法，顿时觉得头要炸了，后来花了些时间总算搞明白了，写下来记录下，免得以后范蒙。&lt;/p&gt;
+&lt;p&gt;&lt;a name=&#34;6146f119&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h5 id=&#34;1-用法&#34;&gt;&lt;a href=&#34;#1-用法&#34; class=&#34;headerlink&#34; title=&#34;1. 用法&#34;&gt;&lt;/a&gt;1. 用法&lt;/h5&gt;&lt;p&gt;parseInt(&lt;em&gt;string&lt;/em&gt;, &lt;em&gt;radix&lt;/em&gt;);&lt;br&gt;一句话描述其作用就是将用 radix 进制表示的 string 最终转换为十进制。&lt;br&gt;&lt;a name=&#34;c947d18b&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h5 id=&#34;2-具体实践&#34;&gt;&lt;a href=&#34;#2-具体实践&#34; class=&#34;headerlink&#34; title=&#34;2. 具体实践&#34;&gt;&lt;/a&gt;2. 具体实践&lt;/h5&gt;&lt;p&gt;举几个基本的小栗子：&lt;/p&gt;
+&lt;figure class=&#34;highlight javascript&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;built_in&#34;&gt;parseInt&lt;/span&gt;(&lt;span class=&#34;string&#34;&gt;&#39;255&#39;&lt;/span&gt;) &lt;span class=&#34;comment&#34;&gt;// 255 不写 radix 参数指定几进制时，一般默认采用十进制，建议始终带第二个参数&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;built_in&#34;&gt;parseInt&lt;/span&gt;(&lt;span class=&#34;string&#34;&gt;&#39;11&#39;&lt;/span&gt;, &lt;span class=&#34;number&#34;&gt;2&lt;/span&gt;) &lt;span class=&#34;comment&#34;&gt;// 3&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;built_in&#34;&gt;parseInt&lt;/span&gt;(&lt;span class=&#34;string&#34;&gt;&#39;011&#39;&lt;/span&gt;, &lt;span class=&#34;number&#34;&gt;8&lt;/span&gt;) &lt;span class=&#34;comment&#34;&gt;// 9&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;built_in&#34;&gt;parseInt&lt;/span&gt;(&lt;span class=&#34;string&#34;&gt;&#39;0x11&#39;&lt;/span&gt;, &lt;span class=&#34;number&#34;&gt;16&lt;/span&gt;) &lt;span class=&#34;comment&#34;&gt;// 17&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li> -->
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-用法"><span class="toc-number">1.</span> <span class="toc-text">1. 用法</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-具体实践"><span class="toc-number">2.</span> <span class="toc-text">2. 具体实践</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#2-以-0-或-undefined-作为-radix"><span class="toc-number">2.1.</span> <span class="toc-text">(2) 以 0 或 undefined 作为 radix</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        parseInt用法详解
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Just a blog site</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-03-08T00:45:07.000Z" itemprop="datePublished">2019-03-08</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/javascript/">javascript</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>今天在 MDN 深究了下 parseInt 的用法，顿时觉得头要炸了，后来花了些时间总算搞明白了，写下来记录下，免得以后范蒙。</p>
+<p><a name="6146f119"></a></p>
+<h5 id="1-用法"><a href="#1-用法" class="headerlink" title="1. 用法"></a>1. 用法</h5><p>parseInt(<em>string</em>, <em>radix</em>);<br>一句话描述其作用就是将用 radix 进制表示的 string 最终转换为十进制。<br><a name="c947d18b"></a></p>
+<h5 id="2-具体实践"><a href="#2-具体实践" class="headerlink" title="2. 具体实践"></a>2. 具体实践</h5><p>举几个基本的小栗子：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">parseInt</span>(<span class="string">'255'</span>) <span class="comment">// 255 不写 radix 参数指定几进制时，一般默认采用十进制，建议始终带第二个参数</span></span><br><span class="line"><span class="built_in">parseInt</span>(<span class="string">'11'</span>, <span class="number">2</span>) <span class="comment">// 3</span></span><br><span class="line"><span class="built_in">parseInt</span>(<span class="string">'011'</span>, <span class="number">8</span>) <span class="comment">// 9</span></span><br><span class="line"><span class="built_in">parseInt</span>(<span class="string">'0x11'</span>, <span class="number">16</span>) <span class="comment">// 17</span></span><br></pre></td></tr></table></figure>
+
+<a id="more"></a><br>看过这些，是不是想说挺简单的啊，也就那么回事儿。那我们来看几类特殊的东西，恶心一下。
+
+<p>(1) 以正常进制数作为 radix</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">parseInt(&apos; 11&apos;, 10) // 11 从第一个不是空字符的数字开始 parse</span><br><span class="line">parseInt(&apos; a11&apos;, 10) // NaN 第一个不是空字符的字符不是数字，转换为 NaN</span><br><span class="line">parseInt(&apos; 11a11&apos;, 10) // 11 从第一个不是空字符的数字开始, 截止到下个非数字的字符进行 parse</span><br><span class="line">parseInt(&apos; &apos;) // NaN 仅空字符转换为 NaN</span><br></pre></td></tr></table></figure>
+
+<p><a name="2a4115e4"></a></p>
+<h6 id="2-以-0-或-undefined-作为-radix"><a href="#2-以-0-或-undefined-作为-radix" class="headerlink" title="(2) 以 0 或 undefined 作为 radix"></a>(2) 以 0 或 undefined 作为 radix</h6><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">parseInt</span>(<span class="string">'011'</span>, <span class="number">0</span> 或 <span class="literal">undefined</span>) <span class="comment">// es3 9 | es5+ 11</span></span><br><span class="line"><span class="built_in">parseInt</span>(<span class="number">011</span>, <span class="number">0</span> 或 <span class="literal">undefined</span>) <span class="comment">// 9</span></span><br><span class="line"><span class="built_in">parseInt</span>(<span class="number">0x11</span>, <span class="number">0</span> 或 <span class="literal">undefined</span>) <span class="comment">// 17</span></span><br><span class="line"><span class="built_in">parseInt</span>(<span class="string">'0x11'</span>, <span class="number">0</span> 或 <span class="literal">undefined</span>) <span class="comment">// 17</span></span><br><span class="line"><span class="built_in">parseInt</span>(<span class="string">'0xx11'</span>, <span class="number">0</span> 或 <span class="literal">undefined</span>) <span class="comment">// NaN</span></span><br><span class="line"><span class="built_in">parseInt</span>(<span class="string">'0x11x11'</span>, <span class="number">0</span> 或 <span class="literal">undefined</span>) <span class="comment">// 17</span></span><br></pre></td></tr></table></figure>
+
+<p>结论：radix 为 0 或者 undefined，会根据情况解析为 8进制、10进制、16进制，<br>当去除空字符以 0 开头时， 数字会被认为是8进制进行parse，字符串在 es3 会认为是8进制，但 es5 废除了这个规则，按10进制处理。<br>当去除空字符以非0数字开头时，按10进制处理。<br>当去除空字符以 0x 开头时，无论是字符串还是整数都按 16 进制进行 parse。 0x后面直接紧跟字母会 parse 为 NaN， 如果是 16进制数后又加其他非数字字符串，则只 parse 数字部分。</p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-用法"><span class="toc-number">1.</span> <span class="toc-text">1. 用法</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-具体实践"><span class="toc-number">2.</span> <span class="toc-text">2. 具体实践</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#2-以-0-或-undefined-作为-radix"><span class="toc-number">2.1.</span> <span class="toc-text">(2) 以 0 或 undefined 作为 radix</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://sunnybob.ml/2019/03/08/parseInt用法详解/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://sunnybob.ml/2019/03/08/parseInt用法详解/&text=parseInt用法详解"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <!-- <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://sunnybob.ml/2019/03/08/parseInt用法详解/&title=parseInt用法详解"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://sunnybob.ml/2019/03/08/parseInt用法详解/&is_video=false&description=parseInt用法详解"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li> -->
+  <li><a class="icon" href="mailto:?subject=parseInt用法详解&body=Check out this article: https://sunnybob.ml/2019/03/08/parseInt用法详解/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <!-- <li><a class="icon" href="https://getpocket.com/save?url=https://sunnybob.ml/2019/03/08/parseInt用法详解/&title=parseInt用法详解"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="http://reddit.com/submit?url=https://sunnybob.ml/2019/03/08/parseInt用法详解/&title=parseInt用法详解"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://sunnybob.ml/2019/03/08/parseInt用法详解/&title=parseInt用法详解"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="http://digg.com/submit?url=https://sunnybob.ml/2019/03/08/parseInt用法详解/&title=parseInt用法详解"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://sunnybob.ml/2019/03/08/parseInt用法详解/&name=parseInt用法详解&description=&lt;p&gt;今天在 MDN 深究了下 parseInt 的用法，顿时觉得头要炸了，后来花了些时间总算搞明白了，写下来记录下，免得以后范蒙。&lt;/p&gt;
+&lt;p&gt;&lt;a name=&#34;6146f119&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h5 id=&#34;1-用法&#34;&gt;&lt;a href=&#34;#1-用法&#34; class=&#34;headerlink&#34; title=&#34;1. 用法&#34;&gt;&lt;/a&gt;1. 用法&lt;/h5&gt;&lt;p&gt;parseInt(&lt;em&gt;string&lt;/em&gt;, &lt;em&gt;radix&lt;/em&gt;);&lt;br&gt;一句话描述其作用就是将用 radix 进制表示的 string 最终转换为十进制。&lt;br&gt;&lt;a name=&#34;c947d18b&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h5 id=&#34;2-具体实践&#34;&gt;&lt;a href=&#34;#2-具体实践&#34; class=&#34;headerlink&#34; title=&#34;2. 具体实践&#34;&gt;&lt;/a&gt;2. 具体实践&lt;/h5&gt;&lt;p&gt;举几个基本的小栗子：&lt;/p&gt;
+&lt;figure class=&#34;highlight javascript&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;built_in&#34;&gt;parseInt&lt;/span&gt;(&lt;span class=&#34;string&#34;&gt;&#39;255&#39;&lt;/span&gt;) &lt;span class=&#34;comment&#34;&gt;// 255 不写 radix 参数指定几进制时，一般默认采用十进制，建议始终带第二个参数&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;built_in&#34;&gt;parseInt&lt;/span&gt;(&lt;span class=&#34;string&#34;&gt;&#39;11&#39;&lt;/span&gt;, &lt;span class=&#34;number&#34;&gt;2&lt;/span&gt;) &lt;span class=&#34;comment&#34;&gt;// 3&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;built_in&#34;&gt;parseInt&lt;/span&gt;(&lt;span class=&#34;string&#34;&gt;&#39;011&#39;&lt;/span&gt;, &lt;span class=&#34;number&#34;&gt;8&lt;/span&gt;) &lt;span class=&#34;comment&#34;&gt;// 9&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;built_in&#34;&gt;parseInt&lt;/span&gt;(&lt;span class=&#34;string&#34;&gt;&#39;0x11&#39;&lt;/span&gt;, &lt;span class=&#34;number&#34;&gt;16&lt;/span&gt;) &lt;span class=&#34;comment&#34;&gt;// 17&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li> -->
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2019 sunnybob
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+  <script>
+    var images = document.querySelectorAll('img');
+    images.forEach(function(image) {
+      var src = image.getAttribute('src');
+      var regex = /width=([0-9]+)|height=([0-9]+)/g;
+      var size = src.match(regex);
+      if (Object.prototype.toString.call(size) === '[object Array]' && size.length) {
+        size.forEach(item => {
+          var arr = item.split('=');
+          image.setAttribute(arr[0], arr[1]);
+        })
+      }
+    });
+  </script>
+</footer>
+
+    </div>
+    <!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+    <!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'cactus-1';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="发现报错在项目升级了依赖包后，出现了 eslint 报如下错误： 奇怪啊，之前也有 eslint, 完全没有这个报错啊？怀疑是之前 eslint 版本太低的原因，导致还没进行依赖循环引用的 lint. 在 eslint no-circle 规则的文档里有循环引用的示例。">
+<meta name="keywords" content="技术博文">
+<meta property="og:type" content="article">
+<meta property="og:title" content="记一次依赖循环引用">
+<meta property="og:url" content="https://sunnybob.ml/2019/04/17/记一次依赖循环引用/index.html">
+<meta property="og:site_name" content="Just a blog site">
+<meta property="og:description" content="发现报错在项目升级了依赖包后，出现了 eslint 报如下错误： 奇怪啊，之前也有 eslint, 完全没有这个报错啊？怀疑是之前 eslint 版本太低的原因，导致还没进行依赖循环引用的 lint. 在 eslint no-circle 规则的文档里有循环引用的示例。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2019/png/242991/1555494977280-1850e41c-1127-40e5-9b51-774d2d0f6417.png#align=left&display=inline&height=210&name=%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-04-17%20%E4%B8%8B%E5%8D%8812.28.05.png&originHeight=430&originWidth=943&size=76121&status=done&width=460">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2019/png/242991/1555662967828-a0d5f4fe-64da-42df-8620-0f7d4d370230.png#align=left&display=inline&height=78&name=image.png&originHeight=118&originWidth=588&size=15217&status=done&width=388">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2019/png/242991/1555662806820-60adad1d-6e5a-46a4-8297-680c6989fe1e.png#align=left&display=inline&height=75&name=image.png&originHeight=122&originWidth=630&size=15691&status=done&width=386">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2019/png/242991/1555663452416-22910612-3a38-47d4-936a-880f71257e13.png#align=left&display=inline&height=88&name=image.png&originHeight=174&originWidth=770&size=29387&status=done&width=390">
+<meta property="og:updated_time" content="2019-08-05T08:23:38.877Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="记一次依赖循环引用">
+<meta name="twitter:description" content="发现报错在项目升级了依赖包后，出现了 eslint 报如下错误： 奇怪啊，之前也有 eslint, 完全没有这个报错啊？怀疑是之前 eslint 版本太低的原因，导致还没进行依赖循环引用的 lint. 在 eslint no-circle 规则的文档里有循环引用的示例。">
+<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2019/png/242991/1555494977280-1850e41c-1127-40e5-9b51-774d2d0f6417.png#align=left&display=inline&height=210&name=%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-04-17%20%E4%B8%8B%E5%8D%8812.28.05.png&originHeight=430&originWidth=943&size=76121&status=done&width=460">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>记一次依赖循环引用</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2019/05/05/回家/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2019/04/08/js 事件流/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://sunnybob.ml/2019/04/17/记一次依赖循环引用/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://sunnybob.ml/2019/04/17/记一次依赖循环引用/&text=记一次依赖循环引用"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <!-- <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://sunnybob.ml/2019/04/17/记一次依赖循环引用/&title=记一次依赖循环引用"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://sunnybob.ml/2019/04/17/记一次依赖循环引用/&is_video=false&description=记一次依赖循环引用"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li> -->
+  <li><a class="icon" href="mailto:?subject=记一次依赖循环引用&body=Check out this article: https://sunnybob.ml/2019/04/17/记一次依赖循环引用/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <!-- <li><a class="icon" href="https://getpocket.com/save?url=https://sunnybob.ml/2019/04/17/记一次依赖循环引用/&title=记一次依赖循环引用"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="http://reddit.com/submit?url=https://sunnybob.ml/2019/04/17/记一次依赖循环引用/&title=记一次依赖循环引用"><i class="fab fa-reddit " aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://sunnybob.ml/2019/04/17/记一次依赖循环引用/&title=记一次依赖循环引用"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="http://digg.com/submit?url=https://sunnybob.ml/2019/04/17/记一次依赖循环引用/&title=记一次依赖循环引用"><i class="fab fa-digg " aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://sunnybob.ml/2019/04/17/记一次依赖循环引用/&name=记一次依赖循环引用&description=&lt;p&gt;&lt;a name=&#34;b7014211&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h4 id=&#34;发现报错&#34;&gt;&lt;a href=&#34;#发现报错&#34; class=&#34;headerlink&#34; title=&#34;发现报错&#34;&gt;&lt;/a&gt;发现报错&lt;/h4&gt;&lt;p&gt;在项目升级了依赖包后，出现了 eslint 报如下错误：&lt;br&gt;&lt;img src=&#34;https://cdn.nlark.com/yuque/0/2019/png/242991/1555494977280-1850e41c-1127-40e5-9b51-774d2d0f6417.png#align=left&amp;display=inline&amp;height=210&amp;name=%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-04-17%20%E4%B8%8B%E5%8D%8812.28.05.png&amp;originHeight=430&amp;originWidth=943&amp;size=76121&amp;status=done&amp;width=460&#34; alt=&#34;屏幕快照 2019-04-17 下午12.28.05.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;奇怪啊，之前也有 eslint, 完全没有这个报错啊？怀疑是之前 eslint 版本太低的原因，导致还没进行依赖循环引用的 lint. 在 eslint no-circle 规则的文档里有循环引用的示例。&lt;br&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li> -->
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#发现报错"><span class="toc-number">1.</span> <span class="toc-text">发现报错</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#根据报错寻找出错点"><span class="toc-number">2.</span> <span class="toc-text">根据报错寻找出错点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#问题解决"><span class="toc-number">3.</span> <span class="toc-text">问题解决</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#相互引用小栗子"><span class="toc-number">4.</span> <span class="toc-text">相互引用小栗子</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        记一次依赖循环引用
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Just a blog site</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-04-17T01:54:19.000Z" itemprop="datePublished">2019-04-17</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/技术博文/">技术博文</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p><a name="b7014211"></a></p>
+<h4 id="发现报错"><a href="#发现报错" class="headerlink" title="发现报错"></a>发现报错</h4><p>在项目升级了依赖包后，出现了 eslint 报如下错误：<br><img src="https://cdn.nlark.com/yuque/0/2019/png/242991/1555494977280-1850e41c-1127-40e5-9b51-774d2d0f6417.png#align=left&display=inline&height=210&name=%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-04-17%20%E4%B8%8B%E5%8D%8812.28.05.png&originHeight=430&originWidth=943&size=76121&status=done&width=460" alt="屏幕快照 2019-04-17 下午12.28.05.png"></p>
+<p>奇怪啊，之前也有 eslint, 完全没有这个报错啊？怀疑是之前 eslint 版本太低的原因，导致还没进行依赖循环引用的 lint. 在 eslint no-circle 规则的文档里有循环引用的示例。<br><a id="more"></a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// dep-b.js</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">'./dep-a.js'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">b</span>(<span class="params"></span>) </span>&#123; <span class="comment">/* ... */</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// dep-a.js</span></span><br><span class="line"><span class="keyword">import</span> &#123; b &#125; <span class="keyword">from</span> <span class="string">'./dep-b.js'</span> <span class="comment">// reported: Dependency cycle detected.</span></span><br></pre></td></tr></table></figure>
+
+<p>两个文件相互引用就会报   <code>// reported: Dependency cycle detected.</code><br><br><a name="9e473a65"></a></p>
+<h4 id="根据报错寻找出错点"><a href="#根据报错寻找出错点" class="headerlink" title="根据报错寻找出错点"></a>根据报错寻找出错点</h4><p>根据 eslint 的报错，发现大多数报错集中在 index.js 文件。项目中的 index.js 文件大部分作用是将代码集中导出，方便引入。<br>继续跟进，根据 index.js 报错的行数，进入具体文件查看, 终于发现了问题。<br>我们的组件都放到了 components 目录下，然后 components 下的 index.js 里将所有组件引入并导出，同时 在 webpack 配置文件里对 components 目录起了别名，以后其他文件用到某几个组件的话，可以类似下面这样引入：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Button, Table, Form &#125; <span class="keyword">from</span> <span class="string">'components'</span>;</span><br></pre></td></tr></table></figure>
+
+<p>简化了写路径的麻烦。<br>但是，在 components 下的组件里，我发现也有直接从 components 根目录 index.js 文件里引其他组件的，<br>比如 Table 组件</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Toolbar &#125; <span class="keyword">from</span> <span class="string">'../../'</span>;</span><br></pre></td></tr></table></figure>
+
+<p>这样就造成了循环引用，Table 引 index.js， index.js 引入Table。<br>找到原因，于是进行一通大改，把类似的改成如下格式：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Toolbar &#125; <span class="keyword">from</span> <span class="string">'./Toolbar'</span>;</span><br></pre></td></tr></table></figure>
+
+<p>引入时直接引入所需组件目录，这样避免了相互引用。<br><a name="520f9e6c"></a></p>
+<h4 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h4><p>改完后，发现报错消失了。虽然项目相互引用没有导致页面崩溃，但是应该避免出现，防止出现意外的 bug。<br>相互引用类似递归，如果无限循环的话会导致页面崩溃，内存溢出。</p>
+<p><a name="20a6503f"></a></p>
+<h4 id="相互引用小栗子"><a href="#相互引用小栗子" class="headerlink" title="相互引用小栗子"></a>相互引用小栗子</h4><p>在网上看到一个很好的例子，并进行了改造。</p>
+<p>event.js</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; odd &#125; <span class="keyword">from</span> <span class="string">'./odd'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> obj = &#123;</span><br><span class="line">  counter: <span class="number">0</span>,</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">even</span>(<span class="params">n</span>) </span>&#123;</span><br><span class="line">  obj.counter++;</span><br><span class="line">  n !== <span class="number">0</span> &amp;&amp; odd(n - <span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>odd.js</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; even, obj &#125; <span class="keyword">from</span> <span class="string">'./even'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">odd</span>(<span class="params">n</span>) </span>&#123;</span><br><span class="line">  obj.counter++;</span><br><span class="line">  n != <span class="number">0</span> &amp;&amp; even(n - <span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>test.js</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; even, obj &#125; <span class="keyword">from</span> <span class="string">'./even.js'</span>;</span><br><span class="line"></span><br><span class="line">even(<span class="number">10</span>);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'counter result:'</span>, obj.counter);</span><br></pre></td></tr></table></figure>
+
+<p>这里，even 文件引用了 odd 文件， odd 文件同时引用了 even 文件，存在着循环引用的问题。<br>在 test.js 这个测试文件中， 我们引入 even.js 进行测试，向 even 方法传入参数 10，当执行 even 时，计数器 counter 自加，若 n 大于零会 执行 odd 方法并传入参数 n-1, 同理， 当执行 odd 时, 计数器 counter 自加, 传入的参数如果大于 0，会调用 even 方法并传入参数 n - 1。这样循环递归调用，直到 n 变为 0 截止。<br>那么我们可能会有疑问，这样循环引用，js 能顺利执行吗? 假设能顺利执行的话，odd.js 中能改变 even.js 文件中的计数器吗? 最后输出的 counter, 是只在 even 文件中自加的结果还是两个文件共同自加的结果？<br>接下来， 我们看下测试结果:<br><br><img src="https://cdn.nlark.com/yuque/0/2019/png/242991/1555662967828-a0d5f4fe-64da-42df-8620-0f7d4d370230.png#align=left&display=inline&height=78&name=image.png&originHeight=118&originWidth=588&size=15217&status=done&width=388" alt="image.png"></p>
+<p>很明显，程序顺利执行，并且 odd 确实改变了 even 文件内的计数器参数。<br><br><img src="https://cdn.nlark.com/yuque/0/2019/png/242991/1555662806820-60adad1d-6e5a-46a4-8297-680c6989fe1e.png#align=left&display=inline&height=75&name=image.png&originHeight=122&originWidth=630&size=15691&status=done&width=386" alt="image.png"></p>
+<p>那么， 我们同时把 even 和 odd 方法的 n == 0 这个判断条件去掉呢？<br>可以想象，两个方法会无限循环的相互调用下去。<br><br><img src="https://cdn.nlark.com/yuque/0/2019/png/242991/1555663452416-22910612-3a38-47d4-936a-880f71257e13.png#align=left&display=inline&height=88&name=image.png&originHeight=174&originWidth=770&size=29387&status=done&width=390" alt="image.png"></p>
+<p>正如我们所预料的那样。</p>
+<p>从中我们可以总结出至少两个结论：</p>
+<ul>
+<li>ES6 模块的循环加载，如果存在着相互调用，且存在截止条件，并不会是程序崩溃。但是，如果造成了无限循环调用，会使得程序崩溃，内存溢出。</li>
+<li>ES6 模块，使用 import 引入时，其实是建立了与模块之间的引用，当用到引入的模块中的变量时，再去模块里取值。</li>
+</ul>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#发现报错"><span class="toc-number">1.</span> <span class="toc-text">发现报错</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#根据报错寻找出错点"><span class="toc-number">2.</span> <span class="toc-text">根据报错寻找出错点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#问题解决"><span class="toc-number">3.</span> <span class="toc-text">问题解决</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#相互引用小栗子"><span class="toc-number">4.</span> <span class="toc-text">相互引用小栗子</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://sunnybob.ml/2019/04/17/记一次依赖循环引用/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://sunnybob.ml/2019/04/17/记一次依赖循环引用/&text=记一次依赖循环引用"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <!-- <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://sunnybob.ml/2019/04/17/记一次依赖循环引用/&title=记一次依赖循环引用"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://sunnybob.ml/2019/04/17/记一次依赖循环引用/&is_video=false&description=记一次依赖循环引用"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li> -->
+  <li><a class="icon" href="mailto:?subject=记一次依赖循环引用&body=Check out this article: https://sunnybob.ml/2019/04/17/记一次依赖循环引用/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <!-- <li><a class="icon" href="https://getpocket.com/save?url=https://sunnybob.ml/2019/04/17/记一次依赖循环引用/&title=记一次依赖循环引用"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="http://reddit.com/submit?url=https://sunnybob.ml/2019/04/17/记一次依赖循环引用/&title=记一次依赖循环引用"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://sunnybob.ml/2019/04/17/记一次依赖循环引用/&title=记一次依赖循环引用"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="http://digg.com/submit?url=https://sunnybob.ml/2019/04/17/记一次依赖循环引用/&title=记一次依赖循环引用"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://sunnybob.ml/2019/04/17/记一次依赖循环引用/&name=记一次依赖循环引用&description=&lt;p&gt;&lt;a name=&#34;b7014211&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h4 id=&#34;发现报错&#34;&gt;&lt;a href=&#34;#发现报错&#34; class=&#34;headerlink&#34; title=&#34;发现报错&#34;&gt;&lt;/a&gt;发现报错&lt;/h4&gt;&lt;p&gt;在项目升级了依赖包后，出现了 eslint 报如下错误：&lt;br&gt;&lt;img src=&#34;https://cdn.nlark.com/yuque/0/2019/png/242991/1555494977280-1850e41c-1127-40e5-9b51-774d2d0f6417.png#align=left&amp;display=inline&amp;height=210&amp;name=%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-04-17%20%E4%B8%8B%E5%8D%8812.28.05.png&amp;originHeight=430&amp;originWidth=943&amp;size=76121&amp;status=done&amp;width=460&#34; alt=&#34;屏幕快照 2019-04-17 下午12.28.05.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;奇怪啊，之前也有 eslint, 完全没有这个报错啊？怀疑是之前 eslint 版本太低的原因，导致还没进行依赖循环引用的 lint. 在 eslint no-circle 规则的文档里有循环引用的示例。&lt;br&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li> -->
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2019 sunnybob
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+  <script>
+    var images = document.querySelectorAll('img');
+    images.forEach(function(image) {
+      var src = image.getAttribute('src');
+      var regex = /width=([0-9]+)|height=([0-9]+)/g;
+      var size = src.match(regex);
+      if (Object.prototype.toString.call(size) === '[object Array]' && size.length) {
+        size.forEach(item => {
+          var arr = item.split('=');
+          image.setAttribute(arr[0], arr[1]);
+        })
+      }
+    });
+  </script>
+</footer>
+
+    </div>
+    <!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+    <!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'cactus-1';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>
