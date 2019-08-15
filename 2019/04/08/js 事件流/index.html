@@ -15,7 +15,7 @@
 <meta property="og:description" content="js 事件流是指事件在 dom 中流转的顺序（或者传播路径），事件流转分为三个过程，捕获阶段 - 目标阶段 - 冒泡阶段。下面我们通过实践探索下事件流机制。 实践首先用 html 和 css 实现如下效果">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://cdn.nlark.com/yuque/0/2019/png/242991/1554799009812-0da6e023-b092-4172-a55d-bd247c79a133.png#align=left&display=inline&height=217&name=image.png&originHeight=678&originWidth=678&size=18409&status=done&width=217">
-<meta property="og:updated_time" content="2019-08-05T08:24:09.902Z">
+<meta property="og:updated_time" content="2019-08-15T09:26:01.301Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="js 事件流">
 <meta name="twitter:description" content="js 事件流是指事件在 dom 中流转的顺序（或者传播路径），事件流转分为三个过程，捕获阶段 - 目标阶段 - 冒泡阶段。下面我们通过实践探索下事件流机制。 实践首先用 html 和 css 实现如下效果">
@@ -173,11 +173,11 @@
 </tr>
 <tr>
 <td>outer</td>
-<td>outer<br>wrapper</td>
+<td>outer、wrapper</td>
 </tr>
 <tr>
 <td>inner</td>
-<td>inner<br>outer<br>wrapper</td>
+<td>inner、outer、wrapper</td>
 </tr>
 </tbody></table>
 <p>从打印结果我们可以得出如下结论:<br>当我们点击某个节点时，首先打印该节点的内容，然后，从该节点开始向上冒泡，若父级监听了相同的事件， 那么父级对应的事件回调也会执行，直到 window。</p>
@@ -201,14 +201,13 @@
 </tr>
 <tr>
 <td>outer</td>
-<td>wrapper<br>outer</td>
+<td>wrapper、outer</td>
 </tr>
 <tr>
 <td>inner</td>
-<td>wrapper</td>
+<td>wrapper、outer、inner</td>
 </tr>
 </tbody></table>
-<p>outer<br>inner |</p>
 <p>从这次的打印结果，我们可以得出结论：<br>当某个节点被点击时，事件流从顶级 window 依次向下传播，若传播到的节点也监听了相同的事件，那么该事件的回调也会执行，直到该点击节点。</p>
 <ul>
 <li>混合</li>
@@ -226,18 +225,17 @@
 </thead>
 <tbody><tr>
 <td>wrapper</td>
-<td>wrapper one <br>wrapper two</td>
+<td>wrapper one、wrapper two</td>
 </tr>
 <tr>
 <td>outer</td>
-<td>wrapper one<br>outer<br>wrapper two</td>
+<td>wrapper one、outer、wrapper two</td>
 </tr>
 <tr>
 <td>inner</td>
-<td>wrapper one</td>
+<td>wrapper one、inner、outer、wrapper two</td>
 </tr>
 </tbody></table>
-<p>inner<br>outer<br>wrapper two |</p>
 <p>由这次的打印结果及之前的结论，我们可以得出最终的结论。</p>
 <p><a name="8c9d507e"></a></p>
 <h4 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h4><p>事件回调的执行顺序是按照事件流来的传播顺序执行的，首先是捕获阶段，若从window 到 当前点击节点的有捕获阶段的监听函数，则按照从顶级 window 到当前点击节点的传播顺序执行回调，接着到达目标阶段，即执行当前点击节点的回调，最后是冒泡阶段，若从当前节点到顶级 window 有冒泡阶段的监听函数，则按照这个传播顺序执行回调。</p>
