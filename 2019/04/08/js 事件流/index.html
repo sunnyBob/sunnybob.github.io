@@ -15,7 +15,7 @@
 <meta property="og:description" content="js 事件流是指事件在 dom 中流转的顺序（或者传播路径），事件流转分为三个过程，捕获阶段 - 目标阶段 - 冒泡阶段。下面我们通过实践探索下事件流机制。 实践首先用 html 和 css 实现如下效果">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://cdn.nlark.com/yuque/0/2019/png/242991/1554799009812-0da6e023-b092-4172-a55d-bd247c79a133.png#align=left&display=inline&height=217&name=image.png&originHeight=678&originWidth=678&size=18409&status=done&width=217">
-<meta property="og:updated_time" content="2019-08-15T09:26:01.301Z">
+<meta property="og:updated_time" content="2019-08-15T09:35:32.353Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="js 事件流">
 <meta name="twitter:description" content="js 事件流是指事件在 dom 中流转的顺序（或者传播路径），事件流转分为三个过程，捕获阶段 - 目标阶段 - 冒泡阶段。下面我们通过实践探索下事件流机制。 实践首先用 html 和 css 实现如下效果">
@@ -236,8 +236,7 @@
 <td>wrapper one、inner、outer、wrapper two</td>
 </tr>
 </tbody></table>
-<p>由这次的打印结果及之前的结论，我们可以得出最终的结论。</p>
-<p><a name="8c9d507e"></a></p>
+<p>由这次的打印结果及之前的结论，我们可以得出最终的结论。<br><a name="8c9d507e"></a></p>
 <h4 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h4><p>事件回调的执行顺序是按照事件流来的传播顺序执行的，首先是捕获阶段，若从window 到 当前点击节点的有捕获阶段的监听函数，则按照从顶级 window 到当前点击节点的传播顺序执行回调，接着到达目标阶段，即执行当前点击节点的回调，最后是冒泡阶段，若从当前节点到顶级 window 有冒泡阶段的监听函数，则按照这个传播顺序执行回调。</p>
 <p>注: 事件的监听节点可以看做是目标阶段，若是一个节点既在捕获阶段又在冒泡阶段监听了相同的事件，那么这个节点两个事件回调的执行顺序按照事件的添加的顺序执行（不区分捕获阶段和冒泡阶段，同属于目标阶段）。</p>
 
