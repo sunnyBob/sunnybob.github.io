@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="页面  设计图 CMP   思路 分为左、中、右三块 寻找布局相似点 实现界面 自动全屏  一、1. 分列、分行  分列方法   grid flex multiple columns   列间距   grid-gap margin需要去除两头的margin，或者通过css选择器不给两头元素添加margin。注：flex布局不存在margin collapse column-gap   块对齐">
+<meta name="keywords" content="blog, web">
+<meta property="og:type" content="article">
+<meta property="og:title" content="大屏">
+<meta property="og:url" content="https://sunnybob.ml/2019/09/06/大屏/index.html">
+<meta property="og:site_name" content="Just a blog site">
+<meta property="og:description" content="页面  设计图 CMP   思路 分为左、中、右三块 寻找布局相似点 实现界面 自动全屏  一、1. 分列、分行  分列方法   grid flex multiple columns   列间距   grid-gap margin需要去除两头的margin，或者通过css选择器不给两头元素添加margin。注：flex布局不存在margin collapse column-gap   块对齐">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-09-06T06:34:23.301Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="大屏">
+<meta name="twitter:description" content="页面  设计图 CMP   思路 分为左、中、右三块 寻找布局相似点 实现界面 自动全屏  一、1. 分列、分行  分列方法   grid flex multiple columns   列间距   grid-gap margin需要去除两头的margin，或者通过css选择器不给两头元素添加margin。注：flex布局不存在margin collapse column-gap   块对齐">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>大屏</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2019/09/06/js中的定时器/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2019/08/05/科一考试/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://sunnybob.ml/2019/09/06/大屏/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://sunnybob.ml/2019/09/06/大屏/&text=大屏"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <!-- <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://sunnybob.ml/2019/09/06/大屏/&title=大屏"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://sunnybob.ml/2019/09/06/大屏/&is_video=false&description=大屏"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li> -->
+  <li><a class="icon" href="mailto:?subject=大屏&body=Check out this article: https://sunnybob.ml/2019/09/06/大屏/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <!-- <li><a class="icon" href="https://getpocket.com/save?url=https://sunnybob.ml/2019/09/06/大屏/&title=大屏"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="http://reddit.com/submit?url=https://sunnybob.ml/2019/09/06/大屏/&title=大屏"><i class="fab fa-reddit " aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://sunnybob.ml/2019/09/06/大屏/&title=大屏"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="http://digg.com/submit?url=https://sunnybob.ml/2019/09/06/大屏/&title=大屏"><i class="fab fa-digg " aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://sunnybob.ml/2019/09/06/大屏/&name=大屏&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li> -->
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#思路"><span class="toc-number">1.</span> <span class="toc-text">思路</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#scss"><span class="toc-number">1.0.1.</span> <span class="toc-text">scss:</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#calc"><span class="toc-number">1.0.2.</span> <span class="toc-text">calc</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#尽情计算"><span class="toc-number">1.1.</span> <span class="toc-text">尽情计算</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        大屏
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Just a blog site</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-09-05T22:29:49.000Z" itemprop="datePublished">2019-09-06</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>页面</p>
+<ul>
+<li><a href="https://app.goabstract.com/projects/645d0030-0c9f-11e8-b85a-fd65d13c8daa/branches/590a9cd0-88c6-11e8-a4c1-09a47205af98/commits/c6f7c5e15f74be4e887666c2619074b07711801a/files/B61A95A2-0EBB-4E5F-B64E-BE690D19BF76/layers/72CD74DF-2746-494C-B3D4-1F56CA147090?mode=build" target="_blank" rel="noopener">设计图</a></li>
+<li><a href="http://139.198.12.234" target="_blank" rel="noopener">CMP</a></li>
+</ul>
+<p><a name="32ae35ec"></a></p>
+<h4 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h4><ol>
+<li>分为左、中、右三块</li>
+<li>寻找布局相似点</li>
+<li>实现界面</li>
+<li>自动全屏</li>
+</ol>
+<p>一、1. 分列、分行</p>
+<ol>
+<li>分列方法</li>
+</ol>
+<ul>
+<li>grid</li>
+<li>flex</li>
+<li>multiple columns</li>
+</ul>
+<ol start="2">
+<li>列间距</li>
+</ol>
+<ul>
+<li>grid-gap</li>
+<li>margin<br><br>需要去除两头的margin，或者通过css选择器不给两头元素添加margin。<br><br>注：flex布局不存在<a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing" target="_blank" rel="noopener">margin collapse</a></li>
+<li>column-gap</li>
+</ul>
+<ol start="3">
+<li>块对齐</li>
+</ol>
+<ul>
+<li>flex</li>
+<li>calc<br><br><a href="http://jsbin.com/rakoniv/edit?html,css,output" target="_blank" rel="noopener">左右高度一致</a></li>
+</ul>
+<p>二、calc与scss计算</p>
+<p><a href="https://segmentfault.com/a/1190000004698546" target="_blank" rel="noopener">calc与scss计算</a></p>
+<p><a name="7289638e"></a></p>
+<h6 id="scss"><a href="#scss" class="headerlink" title="scss:"></a>scss:</h6><ul>
+<li>加减<br><br>绝对单位：px, pt, pc, in, mm, cm…绝对单位都能运算；<br><br>相对单位：ex, em, rem…相对当前字体的都不能运算；</li>
+</ul>
+<p>❌ 🌰</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$plus1: 100px + 20ex; //不能换算的编译都会报错;</span><br><span class="line">$plus2: 100px + 20em;</span><br><span class="line">$plus3: 100px + 20rem;</span><br><span class="line">.plus&#123;</span><br><span class="line">    width: $plus1 + 10px; //在变量或属性中均可做加减法运算;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>报错： <code>Incompatible units: &#39;ex&#39; and &#39;px&#39;.</code></p>
+<p>✔️ 🌰</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$minus1: 100px - 20; //第二个值可不带单位；</span><br><span class="line">$minus2: 100pt - 20px; //运算是从左到右，如第二个值的单位不同于第一个值的单位(pt)，</span><br><span class="line">$minus3: 100px + 20cm; //将会对其进行转换(pt)后再运算；编译出来的值的单位也是(pt);</span><br><span class="line">$minus4: 100rem; //可以正常编译输出;</span><br><span class="line">$minus5: 100rem + 10em; //报错;--Incompatible（不相容） units: &apos;em&apos; and &apos;rem&apos;.);</span><br><span class="line">.minus&#123;</span><br><span class="line">    width: $minus1;</span><br><span class="line">    height: $minus1 + 30; //在属性还可以继续做运算；</span><br><span class="line">    min-width: $minus2;</span><br><span class="line">    min-height: $minus3;</span><br><span class="line">    max-width: $minus4;</span><br><span class="line">    max-height: $minus1 + $minus2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>乘<br><br>相乘的变量或者数字只能一个带单位。不允许不同单位相乘。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">div &#123;</span><br><span class="line">  width: 10px * 20px; //error:  isn&apos;t a valid CSS value</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>除</li>
+</ul>
+<p>css中允许使用<code>/</code>分隔数值，所以仅有<code>/</code>分隔没有运算时，不会当作除法运算，会原样输出。</p>
+<p>参考：<a href="https://www.w3.org/TR/CSS2/fonts.html#font-shorthand" target="_blank" rel="noopener">font ‘/‘</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">div &#123;</span><br><span class="line">  font: 20px / 2px; //原样输出到css</span><br><span class="line">  font: (20px / 2px); // 10px;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a name="calc"></a></p>
+<h6 id="calc"><a href="#calc" class="headerlink" title="calc"></a>calc</h6><p><a name="ebce1234"></a></p>
+<h5 id="尽情计算"><a href="#尽情计算" class="headerlink" title="尽情计算"></a>尽情计算</h5><p>三、 自动全屏</p>
+<ol>
+<li>理想实现效果<br><br>点击总览页按钮，新开tab，进入总览页并自动全屏展示</li>
+<li>现实效果</li>
+<li>全屏api</li>
+</ol>
+<ul>
+<li>requestFullScreen()</li>
+<li>exitFullscreen()</li>
+<li>fullScreenChange()<br><br>最初想法： 监听<code>ESC</code>按键, 在回调函数里执行跳转操作。<br><br>最终实现：在大屏组件内监听<code>fullScreenChange</code>事件，并在<code>unmount</code>周期移除, <code>fullScreenChange</code>时判断是否在全屏模式，全屏就<code>browserHistory.push</code>到总览页</li>
+</ul>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#思路"><span class="toc-number">1.</span> <span class="toc-text">思路</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#scss"><span class="toc-number">1.0.1.</span> <span class="toc-text">scss:</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#calc"><span class="toc-number">1.0.2.</span> <span class="toc-text">calc</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#尽情计算"><span class="toc-number">1.1.</span> <span class="toc-text">尽情计算</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://sunnybob.ml/2019/09/06/大屏/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://sunnybob.ml/2019/09/06/大屏/&text=大屏"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <!-- <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://sunnybob.ml/2019/09/06/大屏/&title=大屏"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://sunnybob.ml/2019/09/06/大屏/&is_video=false&description=大屏"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li> -->
+  <li><a class="icon" href="mailto:?subject=大屏&body=Check out this article: https://sunnybob.ml/2019/09/06/大屏/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <!-- <li><a class="icon" href="https://getpocket.com/save?url=https://sunnybob.ml/2019/09/06/大屏/&title=大屏"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="http://reddit.com/submit?url=https://sunnybob.ml/2019/09/06/大屏/&title=大屏"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://sunnybob.ml/2019/09/06/大屏/&title=大屏"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="http://digg.com/submit?url=https://sunnybob.ml/2019/09/06/大屏/&title=大屏"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://sunnybob.ml/2019/09/06/大屏/&name=大屏&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li> -->
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2019 sunnybob
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+  <script>
+    var images = document.querySelectorAll('img');
+    images.forEach(function(image) {
+      var src = image.getAttribute('src');
+      var regex = /width=([0-9]+)|height=([0-9]+)/g;
+      var size = src.match(regex);
+      if (Object.prototype.toString.call(size) === '[object Array]' && size.length) {
+        size.forEach(item => {
+          var arr = item.split('=');
+          image.setAttribute(arr[0], arr[1]);
+        })
+      }
+    });
+  </script>
+</footer>
+
+    </div>
+    <!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+    <!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'cactus-1';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>
