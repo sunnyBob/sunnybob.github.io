@@ -14,13 +14,10 @@
 <meta property="og:site_name" content="Just a blog site">
 <meta property="og:description" content="在我当前的项目中，是将代码托管到 gitlab, 每次改动或者新功能都是提 MR，然后想尝试下提交 PR 的过程，正好项目功能调研的时候看到一图片合成库，然后看了下源码发现代码中的一点问题，于是就准备提交个 PR，一来走下整个流程，二来给代码些小小优化。于是一个PR就在这样的背景下生成了，某天我突然想起这个PR，就打开人家项目看了下，发现竟然被合进去了，当时感到很开心。然后赶紧去看了下贡献者，发现">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2019/jpeg/242991/1568799057301-19b956f6-1225-49c1-9aaa-2c5581cefe24.jpeg#align=left&display=inline&height=782&name=Jietu20190918-170541.jpg&originHeight=782&originWidth=2006&size=150364&status=done&width=2006">
-<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2019/jpeg/242991/1568799361426-85972f89-315e-4835-80f2-5d2dea9a5ea8.jpeg#align=left&display=inline&height=648&name=Jietu20190918-173538.jpg&originHeight=648&originWidth=2020&size=156693&status=done&width=2020">
-<meta property="og:updated_time" content="2019-09-18T09:37:28.828Z">
+<meta property="og:updated_time" content="2019-09-18T09:41:27.461Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="记第一次 PR 经历">
 <meta name="twitter:description" content="在我当前的项目中，是将代码托管到 gitlab, 每次改动或者新功能都是提 MR，然后想尝试下提交 PR 的过程，正好项目功能调研的时候看到一图片合成库，然后看了下源码发现代码中的一点问题，于是就准备提交个 PR，一来走下整个流程，二来给代码些小小优化。于是一个PR就在这样的背景下生成了，某天我突然想起这个PR，就打开人家项目看了下，发现竟然被合进去了，当时感到很开心。然后赶紧去看了下贡献者，发现">
-<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2019/jpeg/242991/1568799057301-19b956f6-1225-49c1-9aaa-2c5581cefe24.jpeg#align=left&display=inline&height=782&name=Jietu20190918-170541.jpg&originHeight=782&originWidth=2006&size=150364&status=done&width=2006">
     
     
         
@@ -148,8 +145,7 @@
   
 
   <div class="content" itemprop="articleBody">
-    <p>在我当前的项目中，是将代码托管到 gitlab, 每次改动或者新功能都是提 MR，然后想尝试下提交 PR 的过程，正好项目功能调研的时候看到一图片合成库，然后看了下源码发现代码中的一点问题，于是就准备提交个 PR，一来走下整个流程，二来给代码些小小优化。<br>于是一个PR就在这样的背景下生成了，某天我突然想起这个PR，就打开人家项目看了下，发现竟然被合进去了，当时感到很开心。然后赶紧去看了下贡献者，发现并没有自己。莫名其妙之余我开始寻找原因。<br>最后看了下自己的git的全局用户和邮箱配置，发现原来配置的是公司 gitlab 的用户名密码，我提交的 PR 是提交到 github 的，所以 github 通过这个用户名邮箱没找到我，也就没算进贡献者，也没增加我的贡献点，emmm, 可怜🤕。github 没通过我的用户名邮箱验证能不能提交代码，而是验证的 ssh key。<br>所以之后提交代码需要配置下项目的用户名邮箱，或者临时修改全局的，确认正确后再提交。<br>ps: 正确的用户名会有加黑的效果，且是链接，错误的会如下图，没有加黑效果，而且是纯文本。</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2019/jpeg/242991/1568799057301-19b956f6-1225-49c1-9aaa-2c5581cefe24.jpeg#align=left&display=inline&height=782&name=Jietu20190918-170541.jpg&originHeight=782&originWidth=2006&size=150364&status=done&width=2006" alt="Jietu20190918-170541.jpg"><br><img src="https://cdn.nlark.com/yuque/0/2019/jpeg/242991/1568799361426-85972f89-315e-4835-80f2-5d2dea9a5ea8.jpeg#align=left&display=inline&height=648&name=Jietu20190918-173538.jpg&originHeight=648&originWidth=2020&size=156693&status=done&width=2020" alt="Jietu20190918-173538.jpg"></p>
+    <p>在我当前的项目中，是将代码托管到 gitlab, 每次改动或者新功能都是提 MR，然后想尝试下提交 PR 的过程，正好项目功能调研的时候看到一图片合成库，然后看了下源码发现代码中的一点问题，于是就准备提交个 PR，一来走下整个流程，二来给代码些小小优化。<br>于是一个PR就在这样的背景下生成了，某天我突然想起这个PR，就打开人家项目看了下，发现竟然被合进去了，当时感到很开心。然后赶紧去看了下贡献者，发现并没有自己。莫名其妙之余我开始寻找原因。<br>最后看了下自己的git的全局用户和邮箱配置，发现原来配置的是公司 gitlab 的用户名密码，我提交的 PR 是提交到 github 的，所以 github 通过这个用户名邮箱没找到我，也就没算进贡献者，也没增加我的贡献点，emmm, 可怜🤕。github 没通过我的用户名邮箱验证能不能提交代码，而是验证的 ssh key。<br>所以之后提交代码需要配置下项目的用户名邮箱，或者临时修改全局的，确认正确后再提交。<br>ps: 正确的用户名会有加黑的效果，且是链接，错误的会没有加黑效果，而且是纯文本。</p>
 
   </div>
 </article>
