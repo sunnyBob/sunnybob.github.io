@@ -7,7 +7,7 @@
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="description" content="1const arr = [ [1, 2, 2], [3, 4, 5, 5], [6, 7, 8, 9, [11, 12, [12, 13, [14] ] ] ], 10];  有这么一个数组，要对该数组进行扁平化操作，自己总结了以下几个方法：  数组的原生方法  1arr.flat(Inifity); // Inifity 可以扁平化任意嵌套层数的数组  该方法虽然非常简洁，但是浏览器兼容性很差">
-<meta name="keywords" content="blog, web">
+<meta name="keywords" content="javascript">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数组扁平化">
 <meta property="og:url" content="https://sunnybob.ml/2019/09/27/数组扁平化/index.html">
@@ -15,7 +15,7 @@
 <meta property="og:description" content="1const arr = [ [1, 2, 2], [3, 4, 5, 5], [6, 7, 8, 9, [11, 12, [12, 13, [14] ] ] ], 10];  有这么一个数组，要对该数组进行扁平化操作，自己总结了以下几个方法：  数组的原生方法  1arr.flat(Inifity); // Inifity 可以扁平化任意嵌套层数的数组  该方法虽然非常简洁，但是浏览器兼容性很差">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://cdn.nlark.com/yuque/0/2019/png/242991/1569557887664-2100f97e-cd0c-422b-9ce2-dc7cee7ead78.png#align=left&display=inline&height=19&name=image.png&originHeight=38&originWidth=612&search=&size=8380&status=done&width=306">
-<meta property="og:updated_time" content="2019-09-27T04:18:29.013Z">
+<meta property="og:updated_time" content="2019-09-27T04:20:11.031Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="数组扁平化">
 <meta name="twitter:description" content="1const arr = [ [1, 2, 2], [3, 4, 5, 5], [6, 7, 8, 9, [11, 12, [12, 13, [14] ] ] ], 10];  有这么一个数组，要对该数组进行扁平化操作，自己总结了以下几个方法：  数组的原生方法  1arr.flat(Inifity); // Inifity 可以扁平化任意嵌套层数的数组  该方法虽然非常简洁，但是浏览器兼容性很差">
@@ -136,6 +136,11 @@
       
 
       
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/javascript/">javascript</a>
+    </div>
+
 
     </div>
   </header>
@@ -150,7 +155,8 @@
 </ol>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arr.flat(Inifity); <span class="comment">// Inifity 可以扁平化任意嵌套层数的数组</span></span><br></pre></td></tr></table></figure>
 
-<pre><code>该方法虽然非常简洁，但是浏览器兼容性很差。</code></pre><ol start="2">
+<p>该方法虽然非常简洁，但是浏览器兼容性很差。</p>
+<ol start="2">
 <li>递归</li>
 </ol>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">flat</span>(<span class="params">arr</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> flattenArr = [];</span><br><span class="line">  arr.forEach(<span class="function"><span class="params">item</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(item)) &#123;</span><br><span class="line">      flattenArr = flattenArr.concat(flat(item))</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      flattenArr.push(item);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="keyword">return</span> flattenArr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
