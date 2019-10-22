@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>React.lazy 页面懒加载</title>
+      <link href="/2019/10/22/React.lazy%20%E9%A1%B5%E9%9D%A2%E6%87%92%E5%8A%A0%E8%BD%BD/"/>
+      <url>/2019/10/22/React.lazy%20%E9%A1%B5%E9%9D%A2%E6%87%92%E5%8A%A0%E8%BD%BD/</url>
+      
+        <content type="html"><![CDATA[<p>最近项目重构，引入了 ts 和公司的另一个组件库。与此同时，接到了 mentor 分下来的新任务——将项目进行 code splitting 并且做路由级别的懒加载。</p><p>接到这个任务我是很欣喜的，因为之前只是知道懒加载这个概念，没真枪实弹的搞过，这次正好借这个机会多学点新知识。</p><p>随着项目越做越复杂，页面越来越多，一次性加载 js 文件感觉速度慢了很多，路由级别的懒加载即当切换一个路由时，再进行动态加载当前路由所需的 js 和 css 文件，也就是按需加载。</p><p>首先我做的是读各种相关文档，包括 React 文档、webpack相关文档、以及一些技术博文, 也找到了几篇不错的文章：</p><ol><li><a href="https://linguinecode.com/post/code-splitting-react-router-with-react-lazy-and-react-suspense" target="_blank" rel="noopener">Code splitting React router with React Lazy and React Suspense</a></li><li><a href="https://medium.com/hackernoon/the-100-correct-way-to-split-your-chunks-with-webpack-f8a9df5b7758" target="_blank" rel="noopener">The 100% correct way to split your chunks with Webpack</a></li><li>……</li></ol><p>通过文字资料我了解到做懒加载的两种方式，一种是使用 react-loadable，而且还支持服务的渲染；另一种是使用React 的方法 React.lazy 和 React.suspense，缺点是不支持服务的渲染。正好项目目前的 react 版本是 16.8.6，已经支持了 React.lazy(16.6.0 开始支持)，于是决定直接使用 React 已经实现的方法。文档中也有对 React.lazy 结合 react-router 进行页面懒加载的示例，不过基本都是结合的 react-router V4。我们项目使用的版本是 3.0.2。</p><p>既然人家都用的 v4 干脆借这个机会，也把我们项目的 router 升级了吧。但是 v3 到 v4 变化巨大，升级少不了一番挣扎，比如路由的使用方式不同，不是那种嵌套层级的了，还有就是 browserHistory.push() 也没法用了，需要使用 withRouter，或者自己手动实现 browserHistory，并且牵扯到的文件数量比较多。最终还是打算先用 V3 试试，实在不行再升级 react-router 版本。</p><p>在 codesanbox 上，我找到了下面这个例子<br><a href="https://codesandbox.io/s/18rnr5p97q" target="_blank" rel="noopener">https://codesandbox.io/s/18rnr5p97q</a><br>于是我在这个例子的基础上将路由改为 3.0.2，改完后，总是报错，程序无法正常运行，调试半天不知道具体什么原因，于是去看了下 react-router router 和 route 相关的部分代码，还是么找到我程序为啥没法运行的原因，后来调节了下 react-router 依赖的版本，当我调节到 3.2.2 时，发现报错消失了，程序正常运行，最终我调到了 3.2.4 版本。</p><p>既然例子行的通，我就迫不及待的开始在本地项目里码起来了，路由文件我们是使用 json 配置文件的形式配置的路由，我先把几个简单的页面的路由改为了使用 React.lazy 动态加载，然后进行了页面测试，查看页面请求确实是切换路由到新页面的时候加载 几 B 或者 几 KB 的 js 文件, 好使！</p><p>于是我大改一通，把对应路由的组件引入方式都改为了 lazy(() =&gt; import(xxx))，并将路由组件使用 Suspense 包裹起来。</p><p><img src="https://cdn.nlark.com/yuque/0/2019/png/242991/1571753553110-09dc14e2-97d9-45a2-adbe-e7d2b1d811b2.png#align=left&display=inline&height=914&name=suspense.png&originHeight=914&originWidth=1414&search=&size=262268&status=done&width=1414" alt="suspense.png"><br></p><p>再次进行测试时发现项目顶部的 topbar(导航栏)每次切换到一个未加载过的路由都会消失再重现，肯定是动态加载的原因，于是想到 Suspense 的 fallback UI, 我将 topBar 放到了 fallback UI 上，这样切换路由到新页面时就不会出现顶部导航栏消失重现的问题了。</p><p>但是部分路由切换时出现了页面报错，查看报错信息是 Unable to find node on an unmounted component，谷歌相关信息最终得知是 React 的 bug, 于 16.9.0 修复。升级 react 版本后页面正常了。在 dev 环境测试总览页面的加载速度，相比之前快了大约 2 - 3 秒。</p><p>原来加载时间<br><img src="https://cdn.nlark.com/yuque/0/2019/png/242991/1571754079426-92ed9a0b-2375-4ff7-a6f7-e1903fc75256.png#align=left&display=inline&height=574&name=dev.png&originHeight=574&originWidth=2558&search=&size=264925&status=done&width=2558" alt="dev.png"><br></p><p>懒加载时间<br><img src="https://cdn.nlark.com/yuque/0/2019/png/242991/1571754079658-bccf72c0-1d81-440d-ba7e-4ecf9bc696b2.png#align=left&display=inline&height=574&name=lazy-dev.png&originHeight=574&originWidth=2558&search=&size=252543&status=done&width=2558" alt="lazy-dev.png"></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> javascript </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>数组扁平化</title>
       <link href="/2019/09/27/%E6%95%B0%E7%BB%84%E6%89%81%E5%B9%B3%E5%8C%96/"/>
       <url>/2019/09/27/%E6%95%B0%E7%BB%84%E6%89%81%E5%B9%B3%E5%8C%96/</url>
