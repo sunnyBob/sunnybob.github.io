@@ -8,7 +8,7 @@
       <link href="/2019/10/25/git%20reset/"/>
       <url>/2019/10/25/git%20reset/</url>
       
-        <content type="html"><![CDATA[<p>git reset –hard 工作区变得和 reset 到的版本一致（回到 commit 前的状态），清除索引区的所有内容，未跟踪的文件不受影响</p><p>git reset –soft 将 reset 到的版本之后的内容放到当前版本的暂存区(回到 git add 后的状态)</p><p>git reset (–mixed)  将 reset 到的版本之后的内容放到当前版本的工作区的已变更内容中(回到 git add 前的状态)</p>]]></content>
+        <content type="html"><![CDATA[<p>git reset –hard 工作区变得和 reset 到的版本一致（回到 commit 前的状态），清除索引区的所有内容，未跟踪的（未 git add 的）文件不受影响</p><p>git reset –soft 将 reset 到的版本之后的内容放到当前版本的暂存区(回到 git add 后的状态)</p><p>git reset (–mixed)  将 reset 到的版本之后的内容放到当前版本的工作区的已变更内容中(回到 git add 前的状态)</p>]]></content>
       
       
       

@@ -6,18 +6,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="description" content="git reset –hard 工作区变得和 reset 到的版本一致（回到 commit 前的状态），清除索引区的所有内容，未跟踪的文件不受影响 git reset –soft 将 reset 到的版本之后的内容放到当前版本的暂存区(回到 git add 后的状态) git reset (–mixed)  将 reset 到的版本之后的内容放到当前版本的工作区的已变更内容中(回到 git add">
+    <meta name="description" content="git reset –hard 工作区变得和 reset 到的版本一致（回到 commit 前的状态），清除索引区的所有内容，未跟踪的（未 git add 的）文件不受影响 git reset –soft 将 reset 到的版本之后的内容放到当前版本的暂存区(回到 git add 后的状态) git reset (–mixed)  将 reset 到的版本之后的内容放到当前版本的工作区的已变更内">
 <meta name="keywords" content="git">
 <meta property="og:type" content="article">
 <meta property="og:title" content="git reset">
 <meta property="og:url" content="https://sunnybob.ml/2019/10/25/git reset/index.html">
 <meta property="og:site_name" content="Just a blog site">
-<meta property="og:description" content="git reset –hard 工作区变得和 reset 到的版本一致（回到 commit 前的状态），清除索引区的所有内容，未跟踪的文件不受影响 git reset –soft 将 reset 到的版本之后的内容放到当前版本的暂存区(回到 git add 后的状态) git reset (–mixed)  将 reset 到的版本之后的内容放到当前版本的工作区的已变更内容中(回到 git add">
+<meta property="og:description" content="git reset –hard 工作区变得和 reset 到的版本一致（回到 commit 前的状态），清除索引区的所有内容，未跟踪的（未 git add 的）文件不受影响 git reset –soft 将 reset 到的版本之后的内容放到当前版本的暂存区(回到 git add 后的状态) git reset (–mixed)  将 reset 到的版本之后的内容放到当前版本的工作区的已变更内">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-10-25T10:05:48.076Z">
+<meta property="og:updated_time" content="2019-10-25T10:07:09.757Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="git reset">
-<meta name="twitter:description" content="git reset –hard 工作区变得和 reset 到的版本一致（回到 commit 前的状态），清除索引区的所有内容，未跟踪的文件不受影响 git reset –soft 将 reset 到的版本之后的内容放到当前版本的暂存区(回到 git add 后的状态) git reset (–mixed)  将 reset 到的版本之后的内容放到当前版本的工作区的已变更内容中(回到 git add">
+<meta name="twitter:description" content="git reset –hard 工作区变得和 reset 到的版本一致（回到 commit 前的状态），清除索引区的所有内容，未跟踪的（未 git add 的）文件不受影响 git reset –soft 将 reset 到的版本之后的内容放到当前版本的暂存区(回到 git add 后的状态) git reset (–mixed)  将 reset 到的版本之后的内容放到当前版本的工作区的已变更内">
     
     
         
@@ -145,7 +145,7 @@
   
 
   <div class="content" itemprop="articleBody">
-    <p>git reset –hard 工作区变得和 reset 到的版本一致（回到 commit 前的状态），清除索引区的所有内容，未跟踪的文件不受影响</p>
+    <p>git reset –hard 工作区变得和 reset 到的版本一致（回到 commit 前的状态），清除索引区的所有内容，未跟踪的（未 git add 的）文件不受影响</p>
 <p>git reset –soft 将 reset 到的版本之后的内容放到当前版本的暂存区(回到 git add 后的状态)</p>
 <p>git reset (–mixed)  将 reset 到的版本之后的内容放到当前版本的工作区的已变更内容中(回到 git add 前的状态)</p>
 
