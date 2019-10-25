@@ -4,6 +4,19 @@
   
     
     <entry>
+      <title>git reset</title>
+      <link href="/2019/10/25/git%20reset/"/>
+      <url>/2019/10/25/git%20reset/</url>
+      
+        <content type="html"><![CDATA[<p>git reset –hard 工作区变得和 reset 到的版本一致，清除索引区的所有内容</p><p>git reset –soft 将 reset 到的版本之后的内容放到当前版本的暂存区</p><p>git reset (–mixed)  将 reset 到的版本之后的内容放到当前版本的工作区的已变更内容中</p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>React.lazy 页面懒加载</title>
       <link href="/2019/10/22/React.lazy%20%E9%A1%B5%E9%9D%A2%E6%87%92%E5%8A%A0%E8%BD%BD/"/>
       <url>/2019/10/22/React.lazy%20%E9%A1%B5%E9%9D%A2%E6%87%92%E5%8A%A0%E8%BD%BD/</url>
