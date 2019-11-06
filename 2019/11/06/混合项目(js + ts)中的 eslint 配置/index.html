@@ -7,14 +7,14 @@
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="description" content="最近项目开始逐步由 js 过渡到 ts，也就造成项目中同时存在 js, jsx 及 ts, tsx 的情形，于是代码的格式校验成为一个问题。 在一番了解后知道 ts 有专门的 tslint，也就是我们可以使用 eslint 校验原本的 js 代码，使用 tslint 来校验我们新写的 ts 的代码，但后来发现在 2019 年 1 月份，tslint 项目的创建者宣布不再继续维护 tslint，并决">
-<meta name="keywords" content="blog, web">
+<meta name="keywords" content="javascript">
 <meta property="og:type" content="article">
 <meta property="og:title" content="混合项目(js + ts)中的 eslint 配置">
 <meta property="og:url" content="https://sunnybob.ml/2019/11/06/混合项目(js + ts)中的 eslint 配置/index.html">
 <meta property="og:site_name" content="Just a blog site">
 <meta property="og:description" content="最近项目开始逐步由 js 过渡到 ts，也就造成项目中同时存在 js, jsx 及 ts, tsx 的情形，于是代码的格式校验成为一个问题。 在一番了解后知道 ts 有专门的 tslint，也就是我们可以使用 eslint 校验原本的 js 代码，使用 tslint 来校验我们新写的 ts 的代码，但后来发现在 2019 年 1 月份，tslint 项目的创建者宣布不再继续维护 tslint，并决">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-11-06T05:35:47.179Z">
+<meta property="og:updated_time" content="2019-11-06T05:36:51.370Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="混合项目(js + ts)中的 eslint 配置">
 <meta name="twitter:description" content="最近项目开始逐步由 js 过渡到 ts，也就造成项目中同时存在 js, jsx 及 ts, tsx 的情形，于是代码的格式校验成为一个问题。 在一番了解后知道 ts 有专门的 tslint，也就是我们可以使用 eslint 校验原本的 js 代码，使用 tslint 来校验我们新写的 ts 的代码，但后来发现在 2019 年 1 月份，tslint 项目的创建者宣布不再继续维护 tslint，并决">
@@ -134,13 +134,18 @@
       
 
       
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/javascript/">javascript</a>
+    </div>
+
 
     </div>
   </header>
   
 
   <div class="content" itemprop="articleBody">
-    <p>最近项目开始逐步由 js 过渡到 ts，也就造成项目中同时存在 js, jsx 及 ts, tsx 的情形，于是代码的格式校验成为一个问题。</p>
+    <p>最近项目开始逐步由 js 过渡到 ts，也就造成项目中同时存在 js, jsx 及 ts, tsx 的情形，于是代码的格式校验成为一个问题。<br></p>
 <p>在一番了解后知道 ts 有专门的<a href="https://github.com/palantir/tslint" target="_blank" rel="noopener"> tslint</a>，也就是我们可以使用 eslint 校验原本的 js 代码，使用 tslint 来校验我们新写的 ts 的代码，但后来发现在 2019 年 1 月份，tslint 项目的创建者宣布不再继续维护 tslint，并决定为 eslint 支持 typescript 校验贡献他们的力量。</p>
 <p><strong>“In order to avoid bifurcating the linting tool space for TypeScript, we therefore plan to deprecate TSLint and focus our efforts instead on improving ESLint’s TypeScript support.” - **<a href="https://medium.com/palantir/tslint-in-2019-1a144c2317a9" target="_blank" rel="noopener">TSLint in 2019</a><br></strong><br>这也许是个好消息，个人觉得一个项目里弄两套 lint 工具显得比较冗余。</p>
 <p>于是我就打算更改下现有的 eslint 配置，使其可以校验 ts 的代码。</p>
