@@ -14,12 +14,12 @@
 <meta property="og:site_name" content="Just a blog site">
 <meta property="og:description" content="最近项目要改版，最大的变动就是更换组件库，同时转发 server 也由 Python 转为了 Node。因为前端对 Js 更加熟悉，转发 server 用 Node 对前端或者新加入的新人来说都更加友好些。 既然是个 Node 应用，自然想到了使用 pkg 将其打包进行部署。于是没接触过 pkg 的我开始研究如何将 Node 应用使用 pkg 进行打包。  pkg 简介首先简单介绍下 pkg 这个">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2019/png/242991/1563156452292-0251ed06-3acf-4d11-b14a-e4349d474c92.png#align=left&display=inline&height=399&name=image.png&originHeight=1188&originWidth=724&size=115664&status=done&width=243">
-<meta property="og:updated_time" content="2019-09-06T06:27:12.002Z">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2019/png/242991/1563156452292-0251ed06-3acf-4d11-b14a-e4349d474c92.png#align=left&display=inline&height=399&name=image.png&originHeight=1188&originWidth=724&search=&size=115664&status=done&width=243">
+<meta property="og:updated_time" content="2019-11-08T02:49:11.887Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="pkg打包">
 <meta name="twitter:description" content="最近项目要改版，最大的变动就是更换组件库，同时转发 server 也由 Python 转为了 Node。因为前端对 Js 更加熟悉，转发 server 用 Node 对前端或者新加入的新人来说都更加友好些。 既然是个 Node 应用，自然想到了使用 pkg 将其打包进行部署。于是没接触过 pkg 的我开始研究如何将 Node 应用使用 pkg 进行打包。  pkg 简介首先简单介绍下 pkg 这个">
-<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2019/png/242991/1563156452292-0251ed06-3acf-4d11-b14a-e4349d474c92.png#align=left&display=inline&height=399&name=image.png&originHeight=1188&originWidth=724&size=115664&status=done&width=243">
+<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2019/png/242991/1563156452292-0251ed06-3acf-4d11-b14a-e4349d474c92.png#align=left&display=inline&height=399&name=image.png&originHeight=1188&originWidth=724&search=&size=115664&status=done&width=243">
     
     
         
@@ -160,7 +160,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install pkg    // 本地安装</span><br><span class="line">npm install pkg -g // 全局安装</span><br></pre></td></tr></table></figure>
 
 <p><a name="nZlnT"></a></p>
-<h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><p>配置可以分为两种类型，一种是直接打包 Node 入口文件的方式，另一种是通过在 package.json 中添加配置字段进行配置。<br>关于各个配置项不再多加赘述，可以直接在官网看到。下面贴出我们项目的目录结构，并以我们项目为例介绍下两种打包方式。<br><br><br><img src="https://cdn.nlark.com/yuque/0/2019/png/242991/1563156452292-0251ed06-3acf-4d11-b14a-e4349d474c92.png#align=left&display=inline&height=399&name=image.png&originHeight=1188&originWidth=724&size=115664&status=done&width=243" alt="image.png"></p>
+<h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><p>配置可以分为两种类型，一种是直接打包 Node 入口文件的方式，另一种是通过在 package.json 中添加配置字段进行配置。<br>关于各个配置项不再多加赘述，可以直接在官网看到。下面贴出我们项目的目录结构，并以我们项目为例介绍下两种打包方式。<br><br><br><img src="https://cdn.nlark.com/yuque/0/2019/png/242991/1563156452292-0251ed06-3acf-4d11-b14a-e4349d474c92.png#align=left&display=inline&height=399&name=image.png&originHeight=1188&originWidth=724&search=&size=115664&status=done&width=243" alt="image.png"></p>
 <ol>
 <li>通过打包 Node 入口文件方式直接进行打包<br>只需要在 package.json 的 “scripts” 字段添加或者如果全局安装了的话直接运行下面命令:</li>
 </ol>
