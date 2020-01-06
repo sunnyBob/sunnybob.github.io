@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="我们项目的部署方式为每当合并 MR 时, 在我们的一台测试机器上监听并处理收到的 webhook 请求，在机器上有我们的项目文件夹，收到请求后，在项目文件夹内切换分支，拉取最新代码，并进行 build, 之后部署到 apache 服务器。这样的部署有几个不好的地方:  需要在云服务器开通一个端口监听 webhook 当依赖发生变更时需要手动登录到机器重新 install 依赖，或者需要添加代码判断">
+<meta name="keywords" content="技术博文">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gitlab CI|CD">
+<meta property="og:url" content="https://sunnybob.ml/2019/11/25/Gitlab CI|CD/index.html">
+<meta property="og:site_name" content="Just a blog site">
+<meta property="og:description" content="我们项目的部署方式为每当合并 MR 时, 在我们的一台测试机器上监听并处理收到的 webhook 请求，在机器上有我们的项目文件夹，收到请求后，在项目文件夹内切换分支，拉取最新代码，并进行 build, 之后部署到 apache 服务器。这样的部署有几个不好的地方:  需要在云服务器开通一个端口监听 webhook 当依赖发生变更时需要手动登录到机器重新 install 依赖，或者需要添加代码判断">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2020-01-06T07:10:53.914Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Gitlab CI|CD">
+<meta name="twitter:description" content="我们项目的部署方式为每当合并 MR 时, 在我们的一台测试机器上监听并处理收到的 webhook 请求，在机器上有我们的项目文件夹，收到请求后，在项目文件夹内切换分支，拉取最新代码，并进行 build, 之后部署到 apache 服务器。这样的部署有几个不好的地方:  需要在云服务器开通一个端口监听 webhook 当依赖发生变更时需要手动登录到机器重新 install 依赖，或者需要添加代码判断">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>Gitlab CI|CD</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2019/12/11/链表及树构造工具类/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2019/11/06/混合项目(js + ts)中的 eslint 配置/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://sunnybob.ml/2019/11/25/Gitlab CI|CD/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://sunnybob.ml/2019/11/25/Gitlab CI|CD/&text=Gitlab CI|CD"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <!-- <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://sunnybob.ml/2019/11/25/Gitlab CI|CD/&title=Gitlab CI|CD"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://sunnybob.ml/2019/11/25/Gitlab CI|CD/&is_video=false&description=Gitlab CI|CD"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li> -->
+  <li><a class="icon" href="mailto:?subject=Gitlab CI|CD&body=Check out this article: https://sunnybob.ml/2019/11/25/Gitlab CI|CD/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <!-- <li><a class="icon" href="https://getpocket.com/save?url=https://sunnybob.ml/2019/11/25/Gitlab CI|CD/&title=Gitlab CI|CD"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="http://reddit.com/submit?url=https://sunnybob.ml/2019/11/25/Gitlab CI|CD/&title=Gitlab CI|CD"><i class="fab fa-reddit " aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://sunnybob.ml/2019/11/25/Gitlab CI|CD/&title=Gitlab CI|CD"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="http://digg.com/submit?url=https://sunnybob.ml/2019/11/25/Gitlab CI|CD/&title=Gitlab CI|CD"><i class="fab fa-digg " aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://sunnybob.ml/2019/11/25/Gitlab CI|CD/&name=Gitlab CI|CD&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li> -->
+</ul>
+
+    </div>
+    <div id="toc">
+      
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Gitlab CI|CD
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Just a blog site</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-11-24T20:24:10.000Z" itemprop="datePublished">2019-11-25</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/技术博文/">技术博文</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>我们项目的部署方式为每当合并 MR 时, 在我们的一台测试机器上监听并处理收到的 webhook 请求，在机器上有我们的项目文件夹，收到请求后，在项目文件夹内切换分支，拉取最新代码，并进行 build, 之后部署到 apache 服务器。<br>这样的部署有几个不好的地方:</p>
+<ol>
+<li>需要在云服务器开通一个端口监听 webhook</li>
+<li>当依赖发生变更时需要手动登录到机器重新 install 依赖，或者需要添加代码判断 package.json 是否有变化，有变化再重新安装依赖</li>
+<li>维护比较困难，如果来了新的同事，想要优化下部署代码需要重新阅读之前的实现代码</li>
+</ol>
+<p>为了使得部署更加方便，我之前也做过一点优化，如在连接公司的 gitlab 失败后自动更换 VPN 账户密码等。<br>最近试了下 gitlab 的 ci/cd 功能，发现还是非常好用的。要使用这个功能，一个很重要的配置文件就是 gitlab-ci.yml 文件</p>
+<p>接单介绍下  gitlab-ci.yml  的几个概念。</p>
+<p>每一次的构建过程称为一次 pipeline。 每个 pipeline 又包含很多 stage，stage 是串行执行的。每个 stage 又包含若干个 job，job 之前是并行执行的，stage 内的每个 job 执行完后进入下个 stage。</p>
+<p>首先要编写 gitlab-ci.yml 文件（默认放在根目录），比较重要的配置项是 script, 在这里面写我们的处理脚本，在我们使用 cd 等命令时，默认目录是相对于我们的项目根目录下（gitlab-ci.yml文件所在目录）。还需要使用 only 指定分支，只在当前分支 push 时执行 job。</p>
+<p>我写了三个 stage: install_depencies、build、deploy</p>
+<p>install_depencies 时每次都会重新安装依赖，解决了之前我们的部署依赖更新需要手动安装的问题，然后可以把依赖进行 cache, 通过 key 控制 cache 的策略。减少任务执行时间。</p>
+<p>然后需要一个 runner 来执行我们的配置。于是我在测试机器（ubuntu）上注册了 gitlab-runner</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitlab-runner register</span><br></pre></td></tr></table></figure>
+
+<p>这个命令最后会选择 excutor， 我选择了个比较简单的 shell，因为之前我们的部署基本也都是 shell 命令，可以拿来复用。执行完后创建了一个 gitlab-runner 用户，为了防止报权限类的错误，我修改了 /etc/passwd 文件， 将这个用户赋予了 root 权限。然后还会发现 /home/gitlab-runner/ 下多了几个文件夹， 其中包含一个项目文件夹。我们的所写的 script 下的脚本都是在这个项目目录下执行的。</p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://sunnybob.ml/2019/11/25/Gitlab CI|CD/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://sunnybob.ml/2019/11/25/Gitlab CI|CD/&text=Gitlab CI|CD"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <!-- <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://sunnybob.ml/2019/11/25/Gitlab CI|CD/&title=Gitlab CI|CD"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://sunnybob.ml/2019/11/25/Gitlab CI|CD/&is_video=false&description=Gitlab CI|CD"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li> -->
+  <li><a class="icon" href="mailto:?subject=Gitlab CI|CD&body=Check out this article: https://sunnybob.ml/2019/11/25/Gitlab CI|CD/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <!-- <li><a class="icon" href="https://getpocket.com/save?url=https://sunnybob.ml/2019/11/25/Gitlab CI|CD/&title=Gitlab CI|CD"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="http://reddit.com/submit?url=https://sunnybob.ml/2019/11/25/Gitlab CI|CD/&title=Gitlab CI|CD"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://sunnybob.ml/2019/11/25/Gitlab CI|CD/&title=Gitlab CI|CD"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="http://digg.com/submit?url=https://sunnybob.ml/2019/11/25/Gitlab CI|CD/&title=Gitlab CI|CD"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li> -->
+  <!-- <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://sunnybob.ml/2019/11/25/Gitlab CI|CD/&name=Gitlab CI|CD&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li> -->
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2020 sunnybob
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+  <script>
+    var images = document.querySelectorAll('img');
+    images.forEach(function(image) {
+      var src = image.getAttribute('src');
+      var regex = /width=([0-9]+)|height=([0-9]+)/g;
+      var size = src.match(regex);
+      if (Object.prototype.toString.call(size) === '[object Array]' && size.length) {
+        size.forEach(item => {
+          var arr = item.split('=');
+          image.setAttribute(arr[0], arr[1]);
+        })
+      }
+    });
+  </script>
+</footer>
+
+    </div>
+    <!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+    <!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'cactus-1';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>

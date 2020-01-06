@@ -14,14 +14,14 @@
 <meta property="og:site_name" content="Just a blog site">
 <meta property="og:description" content="最近项目重构，引入了 ts 和公司的另一个组件库。与此同时，接到了 mentor 分下来的新任务——将项目进行 code splitting 并且做路由级别的懒加载。 接到这个任务我是很欣喜的，因为之前只是知道懒加载这个概念，没真枪实弹的搞过，这次正好借这个机会多学点新知识。 随着项目越做越复杂，页面越来越多，一次性加载 js 文件感觉速度慢了很多，路由级别的懒加载即当切换一个路由时，再进行动态加">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2019/png/242991/1571753553110-09dc14e2-97d9-45a2-adbe-e7d2b1d811b2.png#align=left&display=inline&height=914&name=suspense.png&originHeight=914&originWidth=1414&search=&size=262268&status=done&width=1414">
-<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2019/png/242991/1571754079426-92ed9a0b-2375-4ff7-a6f7-e1903fc75256.png#align=left&display=inline&height=574&name=dev.png&originHeight=574&originWidth=2558&search=&size=264925&status=done&width=2558">
-<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2019/png/242991/1571754079658-bccf72c0-1d81-440d-ba7e-4ecf9bc696b2.png#align=left&display=inline&height=574&name=lazy-dev.png&originHeight=574&originWidth=2558&search=&size=252543&status=done&width=2558">
-<meta property="og:updated_time" content="2019-10-22T14:24:35.317Z">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2019/png/242991/1571753553110-09dc14e2-97d9-45a2-adbe-e7d2b1d811b2.png#align=left&display=inline&height=914&name=suspense.png&originHeight=914&originWidth=1414&size=262268&status=done&style=none&width=1414">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2019/png/242991/1571754079426-92ed9a0b-2375-4ff7-a6f7-e1903fc75256.png#align=left&display=inline&height=574&name=dev.png&originHeight=574&originWidth=2558&size=264925&status=done&style=none&width=2558">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2019/png/242991/1571754079658-bccf72c0-1d81-440d-ba7e-4ecf9bc696b2.png#align=left&display=inline&height=574&name=lazy-dev.png&originHeight=574&originWidth=2558&size=252543&status=done&style=none&width=2558">
+<meta property="og:updated_time" content="2020-01-06T07:10:55.338Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="React.lazy 页面懒加载">
 <meta name="twitter:description" content="最近项目重构，引入了 ts 和公司的另一个组件库。与此同时，接到了 mentor 分下来的新任务——将项目进行 code splitting 并且做路由级别的懒加载。 接到这个任务我是很欣喜的，因为之前只是知道懒加载这个概念，没真枪实弹的搞过，这次正好借这个机会多学点新知识。 随着项目越做越复杂，页面越来越多，一次性加载 js 文件感觉速度慢了很多，路由级别的懒加载即当切换一个路由时，再进行动态加">
-<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2019/png/242991/1571753553110-09dc14e2-97d9-45a2-adbe-e7d2b1d811b2.png#align=left&display=inline&height=914&name=suspense.png&originHeight=914&originWidth=1414&search=&size=262268&status=done&width=1414">
+<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2019/png/242991/1571753553110-09dc14e2-97d9-45a2-adbe-e7d2b1d811b2.png#align=left&display=inline&height=914&name=suspense.png&originHeight=914&originWidth=1414&size=262268&status=done&style=none&width=1414">
     
     
         
@@ -165,11 +165,11 @@
 <p>在 codesanbox 上，我找到了下面这个例子<br><a href="https://codesandbox.io/s/18rnr5p97q" target="_blank" rel="noopener">https://codesandbox.io/s/18rnr5p97q</a><br>于是我在这个例子的基础上将路由改为 3.0.2，改完后，总是报错，程序无法正常运行，调试半天不知道具体什么原因，于是去看了下 react-router router 和 route 相关的部分代码，还是么找到我程序为啥没法运行的原因，后来调节了下 react-router 依赖的版本，当我调节到 3.2.2 时，发现报错消失了，程序正常运行，最终我调到了 3.2.4 版本。</p>
 <p>既然例子行的通，我就迫不及待的开始在本地项目里码起来了，路由文件我们是使用 json 配置文件的形式配置的路由，我先把几个简单的页面的路由改为了使用 React.lazy 动态加载，然后进行了页面测试，查看页面请求确实是切换路由到新页面的时候加载 几 B 或者 几 KB 的 js 文件, 好使！</p>
 <p>于是我大改一通，把对应路由的组件引入方式都改为了 lazy(() =&gt; import(xxx))，并将路由组件使用 Suspense 包裹起来。</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2019/png/242991/1571753553110-09dc14e2-97d9-45a2-adbe-e7d2b1d811b2.png#align=left&display=inline&height=914&name=suspense.png&originHeight=914&originWidth=1414&search=&size=262268&status=done&width=1414" alt="suspense.png"><br></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/242991/1571753553110-09dc14e2-97d9-45a2-adbe-e7d2b1d811b2.png#align=left&display=inline&height=914&name=suspense.png&originHeight=914&originWidth=1414&size=262268&status=done&style=none&width=1414" alt="suspense.png"><br></p>
 <p>再次进行测试时发现项目顶部的 topbar(导航栏)每次切换到一个未加载过的路由都会消失再重现，肯定是动态加载的原因，于是想到 Suspense 的 fallback UI, 我将 topBar 放到了 fallback UI 上，这样切换路由到新页面时就不会出现顶部导航栏消失重现的问题了。</p>
 <p>但是部分路由切换时出现了页面报错，查看报错信息是 Unable to find node on an unmounted component，谷歌相关信息最终得知是 React 的 bug, 于 16.9.0 修复。升级 react 版本后页面正常了。在 dev 环境测试总览页面的加载速度，相比之前快了大约 2 - 3 秒。</p>
-<p>原来加载时间<br><img src="https://cdn.nlark.com/yuque/0/2019/png/242991/1571754079426-92ed9a0b-2375-4ff7-a6f7-e1903fc75256.png#align=left&display=inline&height=574&name=dev.png&originHeight=574&originWidth=2558&search=&size=264925&status=done&width=2558" alt="dev.png"><br></p>
-<p>懒加载时间<br><img src="https://cdn.nlark.com/yuque/0/2019/png/242991/1571754079658-bccf72c0-1d81-440d-ba7e-4ecf9bc696b2.png#align=left&display=inline&height=574&name=lazy-dev.png&originHeight=574&originWidth=2558&search=&size=252543&status=done&width=2558" alt="lazy-dev.png"></p>
+<p>原来加载时间<br><img src="https://cdn.nlark.com/yuque/0/2019/png/242991/1571754079426-92ed9a0b-2375-4ff7-a6f7-e1903fc75256.png#align=left&display=inline&height=574&name=dev.png&originHeight=574&originWidth=2558&size=264925&status=done&style=none&width=2558" alt="dev.png"><br></p>
+<p>懒加载时间<br><img src="https://cdn.nlark.com/yuque/0/2019/png/242991/1571754079658-bccf72c0-1d81-440d-ba7e-4ecf9bc696b2.png#align=left&display=inline&height=574&name=lazy-dev.png&originHeight=574&originWidth=2558&size=252543&status=done&style=none&width=2558" alt="lazy-dev.png"></p>
 
   </div>
 </article>
@@ -233,7 +233,7 @@
         
         <footer id="footer">
   <div class="footer-left">
-    Copyright &copy; 2019 sunnybob
+    Copyright &copy; 2020 sunnybob
   </div>
   <div class="footer-right">
     <nav>
