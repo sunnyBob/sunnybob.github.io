@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>下载 blog 加密视频</title>
+      <link href="/2020/02/28/%E4%B8%8B%E8%BD%BD%20blog%20%E5%8A%A0%E5%AF%86%E8%A7%86%E9%A2%91/"/>
+      <url>/2020/02/28/%E4%B8%8B%E8%BD%BD%20blog%20%E5%8A%A0%E5%AF%86%E8%A7%86%E9%A2%91/</url>
+      
+        <content type="html"><![CDATA[<p><a name="Yf0id"></a></p><h4 id="blog-加密视频"><a href="#blog-加密视频" class="headerlink" title="blog 加密视频"></a>blog 加密视频</h4><p>我们在观看一些视频时，有些视频并没有提供下载按钮，这时我们可能会想到查看下该视频的地址，利用些技术手段下载下来。但当你看到这一幕：<br><br><br><img src="https://cdn.nlark.com/yuque/0/2020/png/242991/1582859394851-20a3d544-b0e7-47ef-87cf-b9aded7f8384.png#align=left&display=inline&height=103&name=image.png&originHeight=206&originWidth=1416&size=64030&status=done&style=none&width=708" alt="image.png"></p><p>你的表情是不是这样的：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/242991/1582859722453-311419fd-7d5c-4a61-ae04-f31df5ffe5a6.png#align=left&display=inline&height=120&name=image.png&originHeight=240&originWidth=240&size=26973&status=done&style=none&width=120" alt="image.png"><br>这种 blog:https//… 的视频我们就称他为 blog 加密视频吧（可能很不专业，但本文重点在提供下载此类视频的方法）。自己的理解是将一个完整的视频文件分割成无数个小视频文件(xxx.ts)并进行加密。<br></p><p><a name="eJx8D"></a></p><h4 id="如何下载"><a href="#如何下载" class="headerlink" title="如何下载"></a>如何下载</h4><p>下载的思路是将这无数个 xxx.ts 文件全部下载下来，解密并合并为一个完整的视频。<br>首先我们需要下载安装 ffmpeg 工具，各个操作系统都支持，具体下载安装方式我就不赘述了，可以百度或者谷歌解决。<br>下载完成后，我们来到视频播放页，使用 F12 或者 ctrl/cmd + alt + i 打开开发者工具，切换到 network tab 下，然后刷新下网页，建议使用谷歌或者火狐浏览器。<br><br><br><img src="https://cdn.nlark.com/yuque/0/2020/png/242991/1582860350143-bad992bc-89a7-4ea7-a3b5-fb6f0c5aada3.png#align=left&display=inline&height=471&name=image.png&originHeight=942&originWidth=2558&size=1081184&status=done&style=none&width=1279" alt="image.png"><br><br><br>然后我们输入 m3u8，可以看到 *.m3u8 文件，我们点击最后一个，将它的 Request URL 复制下来,或者可以把这个文件双击下载到本地。    <br><br><br><img src="https://cdn.nlark.com/yuque/0/2020/png/242991/1582861406569-e98b0665-22ce-499d-b814-ae450f9029a9.png#align=left&display=inline&height=345&name=image.png&originHeight=690&originWidth=2558&size=189919&status=done&style=none&width=1279" alt="image.png"><br><br><br>这里说下为什么这么多 index.m3u8 文件我们却选择了最后一个，我们对比下他们的内容。<br><br><br><img src="https://cdn.nlark.com/yuque/0/2020/png/242991/1582860799464-c01c6b8d-fb21-4ef2-80e9-c76c5a02ed89.png#align=left&display=inline&height=304&name=image.png&originHeight=608&originWidth=2558&size=154368&status=done&style=none&width=1279" alt="image.png"><img src="https://cdn.nlark.com/yuque/0/2020/png/242991/1582860941307-5b2cf1cd-ed0d-43cb-9baa-03398cb0b4aa.png#align=left&display=inline&height=299&name=image.png&originHeight=598&originWidth=2558&size=205137&status=done&style=none&width=1279" alt="image.png"><br><br><br>最后一个文件里的内容是最多的，包含了各个小片段 *.ts 的文件路径信息，我们在接下来使用 ffmpeg 时，ffmpeg 就会根据这个文件找到这些 *.ts 进行解密并合并为一个完整视频。<br>最后，我们执行以下命令</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -i 你的 Request URL 地址  -vcodec copy -acodec copy -absf aac_adtstoasc 视频名称.mp4</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 技术博文 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>粘性定位</title>
       <link href="/2020/02/17/%E7%B2%98%E6%80%A7%E5%AE%9A%E4%BD%8D/"/>
       <url>/2020/02/17/%E7%B2%98%E6%80%A7%E5%AE%9A%E4%BD%8D/</url>
