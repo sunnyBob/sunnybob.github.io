@@ -7,19 +7,19 @@
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="description" content="本文主要记录下在看这本书时的所感所想，可能存在诸多错误，慢慢更正。  第一章 入门 一、loader 使用方式 可以定义在 webpack 的配置文件中 可以在引入模块时指定 loader （这种方式几乎不用）  例：import ‘style-loader!css-loader?minimize!./css/main.css’;注: loader 的执行顺序为由后到前">
-<meta name="keywords" content="blog, web">
+<meta name="keywords" content="webpack">
 <meta property="og:type" content="article">
 <meta property="og:title" content="《深入浅出 webpack》读书笔记">
 <meta property="og:url" content="https://sunnybob.ml/2019/05/05/《深入浅出 webpack》读书笔记/index.html">
 <meta property="og:site_name" content="Just a blog site">
 <meta property="og:description" content="本文主要记录下在看这本书时的所感所想，可能存在诸多错误，慢慢更正。  第一章 入门 一、loader 使用方式 可以定义在 webpack 的配置文件中 可以在引入模块时指定 loader （这种方式几乎不用）  例：import ‘style-loader!css-loader?minimize!./css/main.css’;注: loader 的执行顺序为由后到前">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2019/png/242991/1557741079153-7ef5ce4a-4972-427a-9e0f-44be2b7101c3.png#align=left&display=inline&height=99&name=image.png&originHeight=118&originWidth=465&size=19673&status=done&width=390">
-<meta property="og:updated_time" content="2019-08-05T08:23:38.877Z">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2019/png/242991/1557741079153-7ef5ce4a-4972-427a-9e0f-44be2b7101c3.png#align=left&display=inline&height=99&name=image.png&originHeight=118&originWidth=465&size=19673&status=done&style=none&width=390">
+<meta property="og:updated_time" content="2020-03-07T08:48:35.758Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="《深入浅出 webpack》读书笔记">
 <meta name="twitter:description" content="本文主要记录下在看这本书时的所感所想，可能存在诸多错误，慢慢更正。  第一章 入门 一、loader 使用方式 可以定义在 webpack 的配置文件中 可以在引入模块时指定 loader （这种方式几乎不用）  例：import ‘style-loader!css-loader?minimize!./css/main.css’;注: loader 的执行顺序为由后到前">
-<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2019/png/242991/1557741079153-7ef5ce4a-4972-427a-9e0f-44be2b7101c3.png#align=left&display=inline&height=99&name=image.png&originHeight=118&originWidth=465&size=19673&status=done&width=390">
+<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2019/png/242991/1557741079153-7ef5ce4a-4972-427a-9e0f-44be2b7101c3.png#align=left&display=inline&height=99&name=image.png&originHeight=118&originWidth=465&size=19673&status=done&style=none&width=390">
     
     
         
@@ -145,6 +145,11 @@
       
 
       
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/webpack/">webpack</a>
+    </div>
+
 
     </div>
   </header>
@@ -175,7 +180,7 @@
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">构建文件保存路径 = devServer.publicPath ？devServer.publicPath : (output.publicPath || <span class="string">'/'</span>)</span><br></pre></td></tr></table></figure>
 
 <p>devServer.publicPath 优先级最高，在 devServer.publicPath 未设置的情况下， 若设置了 output.publicPath，则构建文件保存路径与 output.publicPath 一致（即 devServer.publicPath 等于 output.publicPath），否则默认为 ‘/‘, 若设置了 devServer.publicPath，则按照 devServer.publicPath 进行保存。<br>所以在 index.html 引入构建后的文件时，需要根据以上条件填写路径。也可以访问 服务地址/webpack-dev-server 点击查看文件的实际保存路径,</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2019/png/242991/1557741079153-7ef5ce4a-4972-427a-9e0f-44be2b7101c3.png#align=left&display=inline&height=99&name=image.png&originHeight=118&originWidth=465&size=19673&status=done&width=390" alt="image.png"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/242991/1557741079153-7ef5ce4a-4972-427a-9e0f-44be2b7101c3.png#align=left&display=inline&height=99&name=image.png&originHeight=118&originWidth=465&size=19673&status=done&style=none&width=390" alt="image.png"></p>
 
   </div>
 </article>
